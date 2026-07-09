@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BCHnostr Pulse — Active Users &amp; Top Donors</title>
+<meta name="description" content="Live leaderboard for BCHnostr: most active users and top BCH donors, powered by the Nostr protocol and the Bitcoin Cash blockchain.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="BCHnostr Pulse — Active Users &amp; Top Donors">
+<meta property="og:description" content="A live pulse on the BCHnostr community: who's posting, who's giving.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #0B1210;
+    --surface: #121C19;
+    --surface-2: #17221E;
+    --line: #223129;
+    --green: #17C583;
+    --green-dim: #0E7F58;
+    --gold: #E3B341;
+    --text: #EAF2EF;
+    --muted: #7C9089;
+    --muted-2: #536860;
+    --radius: 14px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.01em; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{ color: inherit; }
+
+  /* subtle background texture: faint network of dots */
+  .bg-grid{
+    position: fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(23,197,131,0.10) 1px, transparent 0);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%);
+  }
+
+  header.top{
+    max-width: 1100px; margin: 0 auto; padding: 40px 20px 0;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:34px; height:34px; border-radius:8px;
+    background: linear-gradient(135deg, var(--green), var(--green-dim));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk'; font-weight:700; color:#06110C; font-size:16px;
+  }
+  .brand-name{ font-size:17px; font-weight:600; }
+  .brand-name span{ color: var(--muted); font-weight:400; }
+  nav.links{ display:flex; gap:22px; font-size:14px; color:var(--muted); }
+  nav.links a:hover{ color: var(--green); }
+
+  /* Hero */
+  .hero{ max-width:1100px; margin:0 auto; padding: 56px 20px 20px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--green); display:flex; align-items:center; gap:8px; margin-bottom:14px;
+  }
+  .dot-live{
+    width:7px; height:7px; border-radius:50%; background:var(--green);
+    box-shadow: 0 0 0 0 rgba(23,197,131,0.6); animation: pulseDot 1.8s infinite;
+  }
+  @keyframes pulseDot{
+    0%{ box-shadow: 0 0 0 0 rgba(23,197,131,0.55); }
+    70%{ box-shadow: 0 0 0 8px rgba(23,197,131,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(23,197,131,0); }
+  }
+  .hero h1{ font-size: clamp(28px, 4.5vw, 44px); line-height:1.1; max-width: 780px; }
+  .hero p{ color: var(--muted); font-size:15px; max-width: 560px; margin-top:14px; line-height:1.6; }
+
+  /* Pulse ticker — signature element */
+  .pulse-wrap{
+    max-width:1100px; margin: 28px auto 0; padding: 0 20px;
+  }
+  .pulse{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    overflow:hidden; position:relative; height:52px; display:flex; align-items:center;
+  }
+  .pulse::before{
+    content:"PULSE"; position:absolute; left:0; top:0; bottom:0; z-index:2;
+    display:flex; align-items:center; padding: 0 14px; font-family:'JetBrains Mono';
+    font-size:11px; letter-spacing:0.1em; color:#06110C; background: var(--green);
+    height:100%;
+  }
+  .pulse-track{
+    display:flex; gap:36px; white-space:nowrap; padding-left:120px;
+    animation: scrollLeft 40s linear infinite;
+    font-family:'JetBrains Mono', monospace; font-size:13px; color: var(--muted);
+  }
+  .pulse-track span.who{ color: var(--text); }
+  .pulse.paused .pulse-track{ animation-play-state: paused; }
+  @keyframes scrollLeft{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
+  }
+  .pulse-empty{ padding-left:120px; color:var(--muted-2); font-size:13px; font-family:'JetBrains Mono'; }
+
+  /* Stats strip */
+  .stats{
+    max-width:1100px; margin: 26px auto 0; padding: 0 20px;
+    display:grid; grid-template-columns: repeat(3,1fr); gap:14px;
+  }
+  .stat-card{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .stat-card .num{ font-family:'Space Grotesk'; font-size:24px; font-weight:600; }
+  .stat-card .label{ color:var(--muted); font-size:12px; margin-top:4px; text-transform:uppercase; letter-spacing:0.05em; }
+
+  /* Controls */
+  .controls{
+    max-width:1100px; margin: 34px auto 0; padding: 0 20px;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  .window-select{ display:flex; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:4px; }
+  .window-select button{
+    background:transparent; border:none; color:var(--muted); font-family:'JetBrains Mono'; font-size:12px;
+    padding:7px 12px; border-radius:7px; cursor:pointer; transition: all .15s ease;
+  }
+  .window-select button.active{ background: var(--green); color:#06110C; font-weight:600; }
+  .refresh-note{ color:var(--muted-2); font-size:12px; font-family:'JetBrains Mono'; }
+
+  /* Leaderboards */
+  .boards{
+    max-width:1100px; margin: 18px auto 60px; padding: 0 20px;
+    display:grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  @media (max-width: 780px){ .boards{ grid-template-columns: 1fr; } .stats{ grid-template-columns:1fr; } }
+
+  .board{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 20px; min-height: 260px;
+  }
+  .board-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .board-head h2{ font-size:18px; }
+  .board-head .tag{
+    font-family:'JetBrains Mono'; font-size:11px; padding:3px 8px; border-radius:6px;
+    background: var(--surface-2); color: var(--muted);
+  }
+  .board.donors .board-head .tag{ color: var(--gold); }
+
+  .row{
+    display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line);
+  }
+  .row:last-child{ border-bottom:none; }
+  .rank{
+    width:26px; text-align:center; font-family:'Space Grotesk'; font-weight:600; color:var(--muted-2); font-size:14px;
+  }
+  .row.top1 .rank{ color:#F5D061; }
+  .row.top2 .rank{ color:#C9D3CE; }
+  .row.top3 .rank{ color:#C08A52; }
+  .avatar{
+    width:32px; height:32px; border-radius:50%; background: var(--surface-2);
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;
+    color: var(--green); flex-shrink:0; overflow:hidden;
+  }
+  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .row-main{ flex:1; min-width:0; }
+  .row-name{ font-size:14px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .row-sub{ font-size:11px; color:var(--muted-2); font-family:'JetBrains Mono'; }
+  .row-value{ text-align:right; font-family:'JetBrains Mono'; font-size:13px; }
+  .row-value .primary{ color: var(--green); font-weight:500; }
+  .board.donors .row-value .primary{ color: var(--gold); }
+  .row-value .secondary{ display:block; color:var(--muted-2); font-size:11px; margin-top:2px; }
+
+  .skeleton{ opacity:.5; }
+  .empty-state, .error-state{
+    color:var(--muted); font-size:13px; text-align:center; padding: 40px 10px; line-height:1.6;
+  }
+  .error-state{ color:#E37E5A; }
+
+  footer{
+    max-width:1100px; margin:0 auto; padding: 30px 20px 50px;
+    border-top:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
+  }
+  .support{ font-size:12px; color:var(--muted); }
+  .support .addr{ color: var(--green); font-family:'JetBrains Mono'; font-size:11px; word-break:break-all; }
+  .footer-links{ display:flex; gap:18px; font-size:12px; color:var(--muted); }
+  .footer-links a:hover{ color:var(--green); }
+
+  @media (prefers-reduced-motion: reduce){
+    .pulse-track{ animation: none; }
+    .dot-live{ animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark">₿</div>
+    <div class="brand-name">BCHnostr Pulse <span>· by CashCompass</span></div>
+  </div>
+  <nav class="links">
+    <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">cashcompass.space</a>
+    <a href="https://twitter.com/alberdioni8406_" target="_blank" rel="noopener">@alberdioni8406_</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow"><span class="dot-live"></span> Live from wss://relay.bchnostr.com</div>
+  <h1>Who's keeping BCHnostr alive.</h1>
+  <p>A running pulse of the BCHnostr community — the most active voices on the relay, and the BCH donors backing the project. No accounts, no gatekeeping — just what the network and the chain show.</p>
+</section>
+
+<div class="pulse-wrap">
+  <div class="pulse" id="pulse">
+    <div class="pulse-track" id="pulseTrack">
+      <span class="pulse-empty">connecting to relay…</span>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num mono" id="statNotes">—</div><div class="label">Notes counted</div></div>
+  <div class="stat-card"><div class="num mono" id="statAuthors">—</div><div class="label">Unique authors</div></div>
+  <div class="stat-card"><div class="num mono" id="statDonated">—</div><div class="label">BCH donated (tracked)</div></div>
+</div>
+
+<div class="controls">
+  <div class="window-select" id="windowSelect">
+    <button data-hours="24">24H</button>
+    <button data-hours="168" class="active">7D</button>
+    <button data-hours="720">30D</button>
+  </div>
+  <div class="refresh-note" id="refreshNote">—</div>
+</div>
+
+<div class="boards">
+  <div class="board active-users">
+    <div class="board-head">
+      <h2>Most Active Users</h2>
+      <div class="tag">by notes posted</div>
+    </div>
+    <div id="activeList"><div class="empty-state">Querying relay…</div></div>
+  </div>
+
+  <div class="board donors">
+    <div class="board-head">
+      <h2>Top Donors</h2>
+      <div class="tag">on-chain BCH</div>
+    </div>
+    <div id="donorList"><div class="empty-state">Fetching donation history…</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="support">
+    Support this project (BCH)<br>
+    <span class="addr">bitcoincash:qrtv37u522gz8a5lezfqk5vukly93cu7gc8tn09040</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">CashCompass</a>
+    <a href="https://cashlegends.club" target="_blank" rel="noopener">CashLegends</a>
+    <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CONFIG — adjust these if the relay, donation address, or
+   API endpoints change.
+   ============================================================ */
+const CONFIG = {
+  RELAY_URL: 'wss://relay.bchnostr.com',
+  DONATION_ADDRESS: 'bitcoincash:qrtv37u522gz8a5lezfqk5vukly93cu7gc8tn09040',
+  HASKOIN_BASE: 'https://api.haskoin.com/bch',
+  MAX_NOTES: 4000,          // cap on events pulled per window query
+  TOP_N: 12,                // rows shown per leaderboard
+  RELAY_TIMEOUT_MS: 12000,  // give up waiting on EOSE after this long
+};
+
+/* ============================================================
+   Small helpers
+   ============================================================ */
+function shortNpub(hex){
+  // Display a truncated hex pubkey (bech32 conversion skipped to avoid
+  // a bech32 dependency; hex is what relays return in event.pubkey).
+  return hex ? hex.slice(0, 8) + '…' + hex.slice(-4) : 'unknown';
+}
+function escapeHtml(str){
+  return (str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function fmtNum(n){ return new Intl.NumberFormat('en-US').format(n); }
+function fmtBCH(sats){ return (sats / 1e8).toFixed(4); }
+
+/* ============================================================
+   NOSTR: minimal relay client (no external libs)
+   ============================================================ */
+function queryRelay(filters, { onEvent, timeoutMs = CONFIG.RELAY_TIMEOUT_MS } = {}){
+  return new Promise((resolve) => {
+    let ws;
+    const subId = 'sub' + Math.random().toString(36).slice(2, 9);
+    const events = [];
+    let done = false;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      try { ws && ws.close(); } catch(e){}
+      resolve(events);
+    };
+
+    const timer = setTimeout(finish, timeoutMs);
+
+    try{
+      ws = new WebSocket(CONFIG.RELAY_URL);
+    } catch(e){
+      clearTimeout(timer);
+      resolve(events);
+      return;
+    }
+
+    ws.onopen = () => {
+      ws.send(JSON.stringify(['REQ', subId, ...filters]));
+    };
+
+    ws.onmessage = (msg) => {
+      let data;
+      try { data = JSON.parse(msg.data); } catch(e){ return; }
+      const [type, sid, payload] = data;
+      if (sid !== subId) return;
+      if (type === 'EVENT'){
+        events.push(payload);
+        if (onEvent) onEvent(payload);
+        if (events.length >= CONFIG.MAX_NOTES) { clearTimeout(timer); finish(); }
+      } else if (type === 'EOSE'){
+        clearTimeout(timer);
+        finish();
+      }
+    };
+
+    ws.onerror = () => { clearTimeout(timer); finish(); };
+    ws.onclose = () => { clearTimeout(timer); finish(); };
+  });
+}
+
+/* Live pulse: a separate persistent subscription for the ticker */
+function startPulseFeed(){
+  const track = document.getElementById('pulseTrack');
+  const wrap = document.getElementById('pulse');
+  let ws;
+  const subId = 'live' + Math.random().toString(36).slice(2, 9);
+  const items = [];
+
+  function render(){
+    if (items.length === 0){
+      track.innerHTML = '<span class="pulse-empty">waiting for activity…</span>';
+      return;
+    }
+    const html = items.map(it =>
+      `<span><span class="who">${escapeHtml(it.name)}</span> — ${escapeHtml(it.text)}</span>`
+    ).join('');
+    // duplicate content so the marquee loops seamlessly
+    track.innerHTML = html + html;
+  }
+
+  try{
+    ws = new WebSocket(CONFIG.RELAY_URL);
+  } catch(e){ return; }
+
+  ws.onopen = () => {
+    ws.send(JSON.stringify(['REQ', subId, { kinds: [1], limit: 15 }]));
+  };
+  ws.onmessage = (msg) => {
+    let data;
+    try { data = JSON.parse(msg.data); } catch(e){ return; }
+    const [type, sid, payload] = data;
+    if (sid !== subId) return;
+    if (type === 'EVENT'){
+      const text = (payload.content || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+      if (!text) return;
+      items.unshift({ name: shortNpub(payload.pubkey), text });
+      if (items.length > 20) items.pop();
+      render();
+    }
+  };
+  ws.onerror = () => { track.innerHTML = '<span class="pulse-empty">relay unreachable — retrying on refresh</span>'; };
+
+  wrap.addEventListener('mouseenter', () => wrap.classList.add('paused'));
+  wrap.addEventListener('mouseleave', () => wrap.classList.remove('paused'));
+}
+
+/* ============================================================
+   ACTIVE USERS
+   ============================================================ */
+async function loadActiveUsers(hours){
+  const listEl = document.getElementById('activeList');
+  listEl.innerHTML = '<div class="empty-state">Querying relay for the last ' + hours + 'h…</div>';
+
+  const since = Math.floor(Date.now() / 1000) - hours * 3600;
+  const notes = await queryRelay([{ kinds: [1], since, limit: CONFIG.MAX_NOTES }]);
+
+  if (notes.length === 0){
+    listEl.innerHTML = '<div class="error-state">No response from the relay. It may be offline, or the time window has no notes.</div>';
+    document.getElementById('statNotes').textContent = '0';
+    document.getElementById('statAuthors').textContent = '0';
+    return;
+  }
+
+  // Aggregate post counts per author
+  const counts = new Map();
+  for (const ev of notes){
+    counts.set(ev.pubkey, (counts.get(ev.pubkey) || 0) + 1);
+  }
+  const ranked = [...counts.entries()].sort((a,b) => b[1] - a[1]).slice(0, CONFIG.TOP_N);
+
+  document.getElementById('statNotes').textContent = fmtNum(notes.length);
+  document.getElementById('statAuthors').textContent = fmtNum(counts.size);
+
+  // Fetch profile metadata (kind 0) for the ranked authors only
+  const authors = ranked.map(([pk]) => pk);
+  const profileEvents = await queryRelay([{ kinds: [0], authors, limit: authors.length }]);
+  const profiles = new Map();
+  for (const ev of profileEvents){
+    try{
+      const meta = JSON.parse(ev.content);
+      // keep the newest profile event per author
+      const existing = profiles.get(ev.pubkey);
+      if (!existing || existing._created < ev.created_at){
+        profiles.set(ev.pubkey, { ...meta, _created: ev.created_at });
+      }
+    } catch(e){ /* skip malformed metadata */ }
+  }
+
+  listEl.innerHTML = ranked.map(([pubkey, count], i) => {
+    const profile = profiles.get(pubkey) || {};
+    const name = profile.name || profile.display_name || shortNpub(pubkey);
+    const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+    const avatar = profile.picture
+      ? `<img src="${escapeHtml(profile.picture)}" alt="" onerror="this.parentElement.textContent='${escapeHtml(name[0] || '?').toUpperCase()}'">`
+      : escapeHtml((name[0] || '?').toUpperCase());
+    return `
+      <div class="row ${rankClass}">
+        <div class="rank">${i + 1}</div>
+        <div class="avatar">${avatar}</div>
+        <div class="row-main">
+          <div class="row-name">${escapeHtml(name)}</div>
+          <div class="row-sub">${shortNpub(pubkey)}</div>
+        </div>
+        <div class="row-value"><span class="primary">${fmtNum(count)}</span><span class="secondary">notes</span></div>
+      </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   TOP DONORS — reads on-chain history for CONFIG.DONATION_ADDRESS
+   via Haskoin, aggregating inbound value by sender input address.
+   ============================================================ */
+async function loadDonors(){
+  const listEl = document.getElementById('donorList');
+  try{
+    const addr = CONFIG.DONATION_ADDRESS.replace('bitcoincash:', '');
+    const res = await fetch(`${CONFIG.HASKOIN_BASE}/address/${addr}/transactions/full?limit=200`);
+    if (!res.ok) throw new Error('Haskoin request failed: ' + res.status);
+    const txs = await res.json();
+
+    if (!Array.isArray(txs) || txs.length === 0){
+      listEl.innerHTML = '<div class="empty-state">No donations recorded yet for this address.</div>';
+      document.getElementById('statDonated').textContent = '0';
+      return;
+    }
+
+    const totals = new Map(); // senderAddress -> satoshis
+    let totalDonated = 0;
+
+    for (const tx of txs){
+      // Sum outputs paid TO the donation address in this tx
+      const outToUs = (tx.outputs || [])
+        .filter(o => o.address === addr)
+        .reduce((sum, o) => sum + (o.value || 0), 0);
+      if (outToUs <= 0) continue;
+
+      // Attribute the donation to the first identifiable input address (the sender)
+      const senderInput = (tx.inputs || []).find(i => i.address && i.address !== addr);
+      const sender = senderInput ? senderInput.address : 'unknown sender';
+
+      totals.set(sender, (totals.get(sender) || 0) + outToUs);
+      totalDonated += outToUs;
+    }
+
+    const ranked = [...totals.entries()].sort((a,b) => b[1] - a[1]).slice(0, CONFIG.TOP_N);
+    document.getElementById('statDonated').textContent = fmtBCH(totalDonated);
+
+    listEl.innerHTML = ranked.map(([sender, sats], i) => {
+      const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+      const label = sender === 'unknown sender' ? sender : shortNpub(sender.replace('bitcoincash:', ''));
+      return `
+        <div class="row ${rankClass}">
+          <div class="rank">${i + 1}</div>
+          <div class="avatar">₿</div>
+          <div class="row-main">
+            <div class="row-name mono">${escapeHtml(label)}</div>
+            <div class="row-sub">on-chain</div>
+          </div>
+          <div class="row-value"><span class="primary">${fmtBCH(sats)}</span><span class="secondary">BCH</span></div>
+        </div>`;
+    }).join('');
+
+  } catch(err){
+    listEl.innerHTML = '<div class="error-state">Could not load donation history right now. Try again shortly.</div>';
+    console.error(err);
+  }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+let currentHours = 168;
+
+function setActiveWindowButton(hours){
+  document.querySelectorAll('#windowSelect button').forEach(btn => {
+    btn.classList.toggle('active', Number(btn.dataset.hours) === hours);
+  });
+}
+
+document.getElementById('windowSelect').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  currentHours = Number(btn.dataset.hours);
+  setActiveWindowButton(currentHours);
+  loadActiveUsers(currentHours);
+});
+
+function updateRefreshNote(){
+  document.getElementById('refreshNote').textContent = 'last checked ' + new Date().toLocaleTimeString();
+}
+
+async function init(){
+  startPulseFeed();
+  await Promise.all([loadActiveUsers(currentHours), loadDonors()]);
+  updateRefreshNote();
+}
+
+init();
+</script>
+</body>
+</html>
