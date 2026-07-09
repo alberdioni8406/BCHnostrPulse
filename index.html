@@ -6,11 +6,6 @@
 <title>BCHnostr Pulse — Community Live</title>
 <meta name="description" content="Live pulse of the BCHnostr community: active voices, real-time notes, and network health.">
 
-<!-- Open Graph -->
-<meta property="og:title" content="BCHnostr Pulse — Community Live">
-<meta property="og:description" content="A running pulse of the BCHnostr community.">
-<meta property="og:type" content="website">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -43,7 +38,7 @@
   }
   h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.01em; }
   .mono{ font-family:'JetBrains Mono', monospace; }
-  a{ color: inherit; }
+  a{ color: inherit; text-decoration: none; }
 
   .bg-grid{
     position: fixed; inset:0; z-index:-1; pointer-events:none;
@@ -53,7 +48,7 @@
   }
 
   header.top{
-    max-width: 1100px; margin: 0 auto; padding: 40px 20px 0;
+    max-width: 1100px; margin: 0 auto; padding: 32px 20px 0;
     display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
   }
   .brand{ display:flex; align-items:center; gap:10px; }
@@ -65,11 +60,8 @@
   }
   .brand-name{ font-size:17px; font-weight:600; }
   .brand-name span{ color: var(--muted); font-weight:400; }
-  nav.links{ display:flex; gap:22px; font-size:14px; color:var(--muted); }
-  nav.links a:hover{ color: var(--green); }
 
-  /* Hero */
-  .hero{ max-width:1100px; margin:0 auto; padding: 56px 20px 20px; }
+  .hero{ max-width:1100px; margin:0 auto; padding: 48px 20px 20px; }
   .eyebrow{
     font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
     color: var(--green); display:flex; align-items:center; gap:8px; margin-bottom:14px;
@@ -83,10 +75,9 @@
     70%{ box-shadow: 0 0 0 8px rgba(23,197,131,0); }
     100%{ box-shadow: 0 0 0 0 rgba(23,197,131,0); }
   }
-  .hero h1{ font-size: clamp(28px, 4.5vw, 44px); line-height:1.1; max-width: 780px; }
+  .hero h1{ font-size: clamp(26px, 5vw, 44px); line-height:1.1; max-width: 780px; }
   .hero p{ color: var(--muted); font-size:15px; max-width: 560px; margin-top:14px; line-height:1.6; }
 
-  /* Pulse ticker */
   .pulse-wrap{
     max-width:1100px; margin: 28px auto 0; padding: 0 20px;
   }
@@ -105,27 +96,20 @@
     animation: scrollLeft 35s linear infinite;
     font-family:'JetBrains Mono', monospace; font-size:13px; color: var(--muted);
   }
-  .pulse-track span.who{ color: var(--text); }
   .pulse.paused .pulse-track{ animation-play-state: paused; }
-  @keyframes scrollLeft{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
-  }
-  .pulse-empty{ padding-left:120px; color:var(--muted-2); font-size:13px; font-family:'JetBrains Mono'; }
+  @keyframes scrollLeft{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
 
-  /* Stats strip */
   .stats{
     max-width:1100px; margin: 26px auto 0; padding: 0 20px;
-    display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px;
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;
   }
   .stat-card{
     background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
-    padding: 16px 18px;
+    padding: 18px 20px;
   }
-  .stat-card .num{ font-family:'Space Grotesk'; font-size:24px; font-weight:600; }
-  .stat-card .label{ color:var(--muted); font-size:12px; margin-top:4px; text-transform:uppercase; letter-spacing:0.05em; }
+  .stat-card .num{ font-family:'Space Grotesk'; font-size:26px; font-weight:600; }
+  .stat-card .label{ color:var(--muted); font-size:12px; margin-top:6px; text-transform:uppercase; letter-spacing:0.05em; }
 
-  /* Controls */
   .controls{
     max-width:1100px; margin: 34px auto 0; padding: 0 20px;
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
@@ -133,70 +117,72 @@
   .window-select{ display:flex; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:4px; }
   .window-select button{
     background:transparent; border:none; color:var(--muted); font-family:'JetBrains Mono'; font-size:12px;
-    padding:7px 12px; border-radius:7px; cursor:pointer; transition: all .15s ease;
+    padding:8px 14px; border-radius:7px; cursor:pointer;
   }
   .window-select button.active{ background: var(--green); color:#06110C; font-weight:600; }
 
-  /* Boards */
   .boards{
     max-width:1100px; margin: 18px auto 60px; padding: 0 20px;
-    display:grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    display:grid; grid-template-columns: 1fr; gap: 20px;
   }
-  @media (max-width: 780px){ .boards{ grid-template-columns: 1fr; } }
+  @media (min-width: 780px){ .boards{ grid-template-columns: 1fr 1fr; } }
 
   .board{
     background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
-    padding: 20px; min-height: 320px;
+    padding: 20px;
   }
-  .board-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .board-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
   .board-head h2{ font-size:18px; }
-  .board-head .tag{
-    font-family:'JetBrains Mono'; font-size:11px; padding:3px 8px; border-radius:6px;
-    background: var(--surface-2); color: var(--muted);
-  }
 
   .row{
-    display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);
   }
   .row:last-child{ border-bottom:none; }
-  .rank{ width:26px; text-align:center; font-family:'Space Grotesk'; font-weight:600; color:var(--muted-2); font-size:14px; }
-  .row.top1 .rank{ color:#F5D061; }
-  .row.top2 .rank{ color:#C9D3CE; }
-  .row.top3 .rank{ color:#C08A52; }
+  .rank{ width:26px; text-align:center; font-family:'Space Grotesk'; font-weight:600; color:var(--muted-2); }
   .avatar{
-    width:32px; height:32px; border-radius:50%; background: var(--surface-2);
-    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;
-    color: var(--green); flex-shrink:0; overflow:hidden;
+    width:36px; height:36px; border-radius:50%; background: var(--surface-2);
+    display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;
   }
-  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .avatar img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
   .row-main{ flex:1; min-width:0; }
-  .row-name{ font-size:14px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .row-name{ font-size:14.5px; font-weight:500; }
   .row-sub{ font-size:11px; color:var(--muted-2); font-family:'JetBrains Mono'; }
   .row-value{ text-align:right; font-family:'JetBrains Mono'; font-size:13px; }
-  .row-value .primary{ color: var(--green); font-weight:500; }
 
   .feed-item{
-    background: var(--surface-2); padding:14px; border-radius:10px; margin-bottom:12px;
-    font-size:14px; line-height:1.5;
+    background: var(--surface-2); padding:16px; border-radius:12px; margin-bottom:14px;
+    font-size:14.5px; line-height:1.55;
   }
-  .feed-meta{ font-size:11px; color:var(--muted-2); display:flex; justify-content:space-between; margin-bottom:6px; }
+  .feed-meta{ 
+    font-size:11.5px; color:var(--muted-2); display:flex; justify-content:space-between; 
+    margin-bottom:9px; font-family:'JetBrains Mono'; 
+  }
+  .feed-content{
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 
   .chart-container{
     max-width:1100px; margin: 0 auto 40px; padding: 0 20px;
   }
-  .empty-state, .error-state{
-    color:var(--muted); font-size:13px; text-align:center; padding: 40px 10px; line-height:1.6;
-  }
 
   footer{
-    max-width:1100px; margin:0 auto; padding: 30px 20px 50px;
+    max-width:1100px; margin:0 auto; padding: 40px 20px 60px;
     border-top:1px solid var(--line);
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
+    display:flex; flex-direction:column; gap:20px; align-items:flex-start;
   }
-  .support{ font-size:12px; color:var(--muted); }
-  .support .addr{ color: var(--green); font-family:'JetBrains Mono'; font-size:11px; word-break:break-all; }
-  .footer-links{ display:flex; gap:18px; font-size:12px; color:var(--muted); }
-  .footer-links a:hover{ color:var(--green); }
+  @media (min-width: 640px){
+    footer{ flex-direction:row; align-items:center; justify-content:space-between; }
+  }
+  .support{ font-size:13px; color:var(--muted); }
+  .support .addr{ 
+    color: var(--green); font-family:'JetBrains Mono'; font-size:12px; 
+    word-break:break-all; display:block; margin-top:4px;
+  }
+
+  .empty-state{ color:var(--muted); font-size:13px; text-align:center; padding: 50px 20px; line-height:1.6; }
 </style>
 </head>
 <body>
@@ -217,7 +203,7 @@
 <section class="hero">
   <div class="eyebrow"><span class="dot-live"></span> Live from wss://relay.bchnostr.com</div>
   <h1>Who's keeping BCHnostr alive.</h1>
-  <p>A stronger pulse of the BCHnostr community — real-time activity, most active voices, and network insights. Just what the relay shows.</p>
+  <p>A stronger pulse of the BCHnostr community — real-time activity, most active voices, and network insights.</p>
 </section>
 
 <div class="pulse-wrap">
@@ -244,16 +230,14 @@
 </div>
 
 <div class="boards">
-  <!-- Recent Notes -->
   <div class="board">
     <div class="board-head">
       <h2>Live Notes</h2>
       <div class="tag">real-time feed</div>
     </div>
-    <div id="liveFeed" style="max-height:420px; overflow-y:auto;"></div>
+    <div id="liveFeed" style="max-height:480px; overflow-y:auto; padding-right:8px;"></div>
   </div>
 
-  <!-- Most Active -->
   <div class="board">
     <div class="board-head">
       <h2>Most Active Users</h2>
@@ -268,7 +252,7 @@
     <div class="board-head">
       <h2>Activity Over Time</h2>
     </div>
-    <canvas id="activityChart" height="110"></canvas>
+    <canvas id="activityChart" height="120"></canvas>
   </div>
 </div>
 
@@ -277,57 +261,40 @@
     Support this project (BCH)<br>
     <span class="addr">bitcoincash:qrtv37u522gz8a5lezfqk5vukly93cu7gc8tn09040</span>
   </div>
-  <div class="footer-links">
+  <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted);">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
     <a href="https://cashcompass.space" target="_blank" rel="noopener">CashCompass</a>
   </div>
 </footer>
 
 <script>
-const CONFIG = {
-  RELAY_URL: 'wss://relay.bchnostr.com',
-  MAX_NOTES: 800,
-  TOP_N: 12
-};
+const CONFIG = { RELAY_URL: 'wss://relay.bchnostr.com', MAX_NOTES: 800, TOP_N: 12 };
 
 function shortNpub(hex){ return hex ? hex.slice(0,8)+'…'+hex.slice(-4) : 'unknown'; }
 function escapeHtml(str){ return (str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function fmtNum(n){ return new Intl.NumberFormat('en-US').format(n || 0); }
 
-let notesCount = 0;
-let authors = new Set();
-let recentNotes = [];
-let chartInstance;
+let notesCount = 0, authorsSet = new Set(), recentNotes = [], profiles = new Map(), chartInstance;
 
-// Pulse ticker
 function startPulseFeed(){
   const track = document.getElementById('pulseTrack');
-  let ws;
-  const subId = 'live'+Math.random().toString(36).slice(2,9);
-  const items = [];
-
-  function render(){
-    if(items.length===0) {
-      track.innerHTML = '<span class="pulse-empty">waiting for activity…</span>';
-      return;
-    }
-    let html = items.map(it => `<span><span class="who">${escapeHtml(it.name)}</span> — ${escapeHtml(it.text)}</span>`).join('');
-    track.innerHTML = html + html;
-  }
+  let items = [];
+  let ws, subId = 'live'+Date.now();
 
   try{
     ws = new WebSocket(CONFIG.RELAY_URL);
-    ws.onopen = () => ws.send(JSON.stringify(['REQ', subId, {kinds:[1], limit:20}]));
+    ws.onopen = () => ws.send(JSON.stringify(['REQ', subId, {kinds:[1], limit:25}]));
     ws.onmessage = (msg) => {
       try{
         const data = JSON.parse(msg.data);
         if(data[0]==='EVENT' && data[1]===subId){
           const ev = data[2];
-          const text = (ev.content||'').replace(/\s+/g,' ').trim().slice(0,65);
+          const text = (ev.content||'').trim().slice(0,68);
           if(text){
-            items.unshift({name:shortNpub(ev.pubkey), text});
-            if(items.length>15) items.pop();
-            render();
+            items.unshift({name: shortNpub(ev.pubkey), text});
+            if(items.length>12) items.pop();
+            const html = items.map(i => `<span><span class="who">${escapeHtml(i.name)}</span> — ${escapeHtml(i.text)}</span>`).join('');
+            track.innerHTML = html + html;
           }
         }
       }catch(e){}
@@ -335,28 +302,36 @@ function startPulseFeed(){
   }catch(e){}
 }
 
-// Query helper
 async function queryRelay(filters){
   return new Promise(resolve => {
-    let ws, events = [], done = false, subId = 'q'+Math.random().toString(36).slice(2,9);
-    const timer = setTimeout(() => { if(!done){ done=true; resolve(events); } }, 14000);
+    let ws, events=[], done=false, subId='q'+Date.now();
+    const timer = setTimeout(()=> {done=true; resolve(events);}, 14000);
 
     try{
       ws = new WebSocket(CONFIG.RELAY_URL);
       ws.onopen = () => ws.send(JSON.stringify(['REQ', subId, ...filters]));
-      ws.onmessage = (m) => {
+      ws.onmessage = m => {
         try{
           const d = JSON.parse(m.data);
-          if(d[0]==='EVENT' && d[1]===subId){
-            events.push(d[2]);
-            if(events.length >= CONFIG.MAX_NOTES){ clearTimeout(timer); done=true; resolve(events); }
-          } else if(d[0]==='EOSE' && d[1]===subId){
-            clearTimeout(timer); done=true; resolve(events);
-          }
+          if(d[0]==='EVENT' && d[1]===subId) events.push(d[2]);
+          else if(d[0]==='EOSE' && d[1]===subId){ clearTimeout(timer); done=true; resolve(events); }
         }catch(e){}
       };
-      ws.onerror = ws.onclose = () => { clearTimeout(timer); resolve(events); };
+      ws.onerror = ws.onclose = () => {clearTimeout(timer); resolve(events);};
     }catch(e){ resolve(events); }
+  });
+}
+
+async function fetchProfiles(pubkeys){
+  if(!pubkeys.length) return;
+  const events = await queryRelay([{kinds:[0], authors: pubkeys, limit: pubkeys.length}]);
+  events.forEach(ev => {
+    try{
+      const meta = JSON.parse(ev.content);
+      if(meta.name || meta.display_name){
+        profiles.set(ev.pubkey, { name: meta.name || meta.display_name || shortNpub(ev.pubkey), picture: meta.picture });
+      }
+    }catch(e){}
   });
 }
 
@@ -364,100 +339,86 @@ async function loadActiveUsers(hours = 24){
   const listEl = document.getElementById('activeList');
   listEl.innerHTML = '<div class="empty-state">Querying relay…</div>';
 
-  const since = Math.floor(Date.now()/1000) - hours*3600;
+  const since = Math.floor(Date.now()/1000) - hours * 3600;
   const notes = await queryRelay([{kinds:[1], since, limit: CONFIG.MAX_NOTES}]);
 
   const counts = new Map();
   notes.forEach(ev => {
     notesCount++;
-    authors.add(ev.pubkey);
-    counts.set(ev.pubkey, (counts.get(ev.pubkey)||0)+1);
+    authorsSet.add(ev.pubkey);
+    counts.set(ev.pubkey, (counts.get(ev.pubkey)||0) + 1);
+    if(recentNotes.length < 40) recentNotes.unshift(ev);
   });
 
   document.getElementById('statNotes').textContent = fmtNum(notesCount);
-  document.getElementById('statAuthors').textContent = fmtNum(authors.size);
+  document.getElementById('statAuthors').textContent = fmtNum(authorsSet.size);
   document.getElementById('statActivity').textContent = fmtNum(notes.length);
 
   const ranked = [...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0, CONFIG.TOP_N);
+  await fetchProfiles(ranked.map(([p])=>p));
 
-  listEl.innerHTML = ranked.map(([pubkey, count], i) => {
-    const rankClass = i<3 ? `top${i+1}` : '';
-    return `
+  let html = '';
+  ranked.forEach(([pubkey, count], i) => {
+    const profile = profiles.get(pubkey) || {};
+    const name = profile.name || shortNpub(pubkey);
+    const avatar = profile.picture ? `<img src="${escapeHtml(profile.picture)}" alt="">` : shortNpub(pubkey)[0].toUpperCase();
+    const rankClass = i < 3 ? `top${i+1}` : '';
+    html += `
       <div class="row ${rankClass}">
         <div class="rank">${i+1}</div>
-        <div class="avatar">${shortNpub(pubkey)[0]}</div>
+        <div class="avatar">${avatar}</div>
         <div class="row-main">
-          <div class="row-name">${shortNpub(pubkey)}</div>
-          <div class="row-sub">active</div>
+          <div class="row-name">${escapeHtml(name)}</div>
+          <div class="row-sub">${shortNpub(pubkey)}</div>
         </div>
         <div class="row-value"><span class="primary">${fmtNum(count)}</span><span class="secondary">notes</span></div>
       </div>`;
-  }).join('') || '<div class="empty-state">No notes in this window</div>';
+  });
+  listEl.innerHTML = html || '<div class="empty-state">No activity yet</div>';
+
+  updateLiveFeed();
 }
 
-// Live feed
 function updateLiveFeed(){
-  const feed = document.getElementById('liveFeed');
-  feed.innerHTML = recentNotes.slice(0,6).map(note => `
-    <div class="feed-item">
-      <div class="feed-meta">
-        <span>${shortNpub(note.pubkey)}</span>
-        <span>${new Date(note.created_at*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
-      </div>
-      <div>\( {escapeHtml(note.content.slice(0,120))} \){note.content.length>120?'…':''}</div>
-    </div>
-  `).join('');
+  const container = document.getElementById('liveFeed');
+  const html = recentNotes.slice(0, 10).map(note => {
+    const profile = profiles.get(note.pubkey) || {};
+    const name = profile.name || shortNpub(note.pubkey);
+    return `
+      <div class="feed-item">
+        <div class="feed-meta">
+          <span>${escapeHtml(name)}</span>
+          <span>${new Date(note.created_at * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
+        </div>
+        <div class="feed-content">${escapeHtml(note.content)}</div>
+      </div>`;
+  }).join('');
+  container.innerHTML = html || '<div class="empty-state">Waiting for new notes…</div>';
 }
 
-// Chart
 function initChart(){
   const ctx = document.getElementById('activityChart');
   chartInstance = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels: Array.from({length:12}, (_,i) => `${11-i}h`),
-      datasets: [{
-        label: 'Notes',
-        data: Array(12).fill(5),
-        borderColor: '#17C583',
-        tension: 0.4,
-        borderWidth: 3
-      }]
-    },
-    options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'#223129'}} } }
+    data: { labels: Array.from({length:12}, (_,i)=>`${11-i}h`), datasets: [{ label:'Notes', data:Array(12).fill(4), borderColor:'#17C583', tension:0.4, borderWidth:3 }] },
+    options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'#223129'}}} }
   });
-}
-
-async function init(){
-  startPulseFeed();
-  initChart();
-  
-  // Initial load
-  await loadActiveUsers(24);
-
-  // Simulate live updates
-  setInterval(() => {
-    if(recentNotes.length < 10){
-      recentNotes.unshift({
-        pubkey: '0000000000000000000000000000000000000000000000000000000000000000'.replace(/0/g, () => Math.floor(Math.random()*16).toString(16)),
-        content: 'gm BCH fam 🚀',
-        created_at: Math.floor(Date.now()/1000)
-      });
-    }
-    updateLiveFeed();
-  }, 4500);
-
-  // Periodic refresh
-  setInterval(() => loadActiveUsers(24), 45000);
 }
 
 document.getElementById('windowSelect').addEventListener('click', e => {
   const btn = e.target.closest('button');
   if(!btn) return;
-  document.querySelectorAll('#windowSelect button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#windowSelect button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   loadActiveUsers(Number(btn.dataset.hours));
 });
+
+async function init(){
+  startPulseFeed();
+  initChart();
+  await loadActiveUsers(24);
+  setInterval(() => loadActiveUsers(24), 45000);
+}
 
 window.onload = init;
 </script>
