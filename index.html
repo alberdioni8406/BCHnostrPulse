@@ -21,6 +21,7 @@
     --green: #17C583;
     --green-dim: #0E7F58;
     --gold: #E3B341;
+    --red: #E35D41;
     --text: #EAF2EF;
     --muted: #7C9089;
     --muted-2: #536860;
@@ -35,10 +36,12 @@
     color: var(--text);
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
   }
   h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.01em; }
   .mono{ font-family:'JetBrains Mono', monospace; }
   a{ color: inherit; text-decoration: none; }
+  .links a:hover { color: var(--green); text-decoration: underline; }
 
   .bg-grid{
     position: fixed; inset:0; z-index:-1; pointer-events:none;
@@ -48,8 +51,12 @@
   }
 
   header.top{
-    max-width: 1100px; margin: 0 auto; padding: 32px 20px 0;
+    max-width: 1100px; margin: 0 auto; padding: 24px 20px 0;
     display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  @media (max-width: 640px) {
+    header.top { padding: 20px 16px 0; }
+    .brand-name { font-size: 15px; }
   }
   .brand{ display:flex; align-items:center; gap:10px; }
   .brand-mark{
@@ -61,15 +68,21 @@
   .brand-name{ font-size:17px; font-weight:600; }
   .brand-name span{ color: var(--muted); font-weight:400; }
 
-  .hero{ max-width:1100px; margin:0 auto; padding: 48px 20px 20px; }
+  .hero{ max-width:1100px; margin:0 auto; padding: 40px 20px 20px; }
+  @media (max-width: 640px) {
+    .hero { padding: 32px 16px 16px; }
+    .hero h1 { font-size: clamp(24px, 7vw, 36px); }
+  }
   .eyebrow{
     font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
     color: var(--green); display:flex; align-items:center; gap:8px; margin-bottom:14px;
   }
+  .eyebrow.err{ color: var(--red); }
   .dot-live{
     width:7px; height:7px; border-radius:50%; background:var(--green);
     box-shadow: 0 0 0 0 rgba(23,197,131,0.6); animation: pulseDot 1.8s infinite;
   }
+  .dot-live.err{ background: var(--red); animation: none; }
   @keyframes pulseDot{
     0%{ box-shadow: 0 0 0 0 rgba(23,197,131,0.55); }
     70%{ box-shadow: 0 0 0 8px rgba(23,197,131,0); }
@@ -81,9 +94,13 @@
   .pulse-wrap{
     max-width:1100px; margin: 28px auto 0; padding: 0 20px;
   }
+  @media (max-width: 640px) {
+    .pulse-wrap { padding: 0 16px; margin: 20px auto 0; }
+  }
   .pulse{
     background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
-    overflow:hidden; position:relative; height:52px; display:flex; align-items:center;
+    overflow:hidden; position:relative; min-height:52px; display:flex; align-items:center;
+    padding-right: 20px;
   }
   .pulse::before{
     content:"PULSE"; position:absolute; left:0; top:0; bottom:0; z-index:2;
@@ -91,13 +108,22 @@
     font-size:11px; letter-spacing:0.1em; color:#06110C; background: var(--green);
     height:100%;
   }
+  @media (max-width: 640px) {
+    .pulse::before { padding: 0 12px; font-size: 10px; }
+  }
   .pulse-track{
-    display:flex; gap:36px; white-space:nowrap; padding-left:120px;
-    animation: scrollLeft 35s linear infinite;
+    display:flex; gap:24px; white-space:nowrap; padding-left:110px;
+    animation: scrollLeft 30s linear infinite;
     font-family:'JetBrains Mono', monospace; font-size:13px; color: var(--muted);
+    align-items: center;
+    height: 100%;
+  }
+  @media (max-width: 640px) {
+    .pulse-track { padding-left: 90px; font-size: 12px; gap: 20px; }
   }
   .pulse.paused .pulse-track{ animation-play-state: paused; }
   @keyframes scrollLeft{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+  .pulse-track .who{ color: var(--green); margin-right:4px; }
 
   .stats{
     max-width:1100px; margin: 26px auto 0; padding: 0 20px;
@@ -108,10 +134,15 @@
     padding: 18px 20px;
   }
   .stat-card .num{ font-family:'Space Grotesk'; font-size:26px; font-weight:600; }
+  @media (max-width: 640px) {
+    .stat-card .num { font-size: 22px; }
+    .stat-card { padding: 16px 18px; }
+  }
   .stat-card .label{ color:var(--muted); font-size:12px; margin-top:6px; text-transform:uppercase; letter-spacing:0.05em; }
+  @media (max-width: 640px) { .stat-card .label { font-size: 11px; } }
 
   .controls{
-    max-width:1100px; margin: 34px auto 0; padding: 0 20px;
+    max-width:1100px; margin: 28px auto 0; padding: 0 20px;
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
   }
   .window-select{ display:flex; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:4px; }
@@ -119,39 +150,66 @@
     background:transparent; border:none; color:var(--muted); font-family:'JetBrains Mono'; font-size:12px;
     padding:8px 14px; border-radius:7px; cursor:pointer;
   }
+  .window-select button:disabled{ opacity:0.5; cursor:default; }
+  @media (max-width: 640px) {
+    .window-select button { padding: 9px 12px; font-size: 11.5px; }
+  }
   .window-select button.active{ background: var(--green); color:#06110C; font-weight:600; }
+  .refresh-note{ color: var(--muted-2); font-size:12px; }
 
   .boards{
     max-width:1100px; margin: 18px auto 60px; padding: 0 20px;
     display:grid; grid-template-columns: 1fr; gap: 20px;
   }
-  @media (min-width: 780px){ .boards{ grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 780px){ 
+    .boards{ grid-template-columns: 1fr 1fr; } 
+  }
 
   .board{
     background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
     padding: 20px;
   }
-  .board-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .board-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap: wrap; gap: 8px; }
   .board-head h2{ font-size:18px; }
+  @media (max-width: 640px) {
+    .board-head h2 { font-size: 17px; }
+    .board { padding: 16px; }
+  }
 
   .row{
     display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);
+  }
+  @media (max-width: 640px) {
+    .row { gap: 10px; padding: 10px 0; }
+    .row-name { font-size: 14px; }
+    .row-value { font-size: 12.5px; }
   }
   .row:last-child{ border-bottom:none; }
   .rank{ width:26px; text-align:center; font-family:'Space Grotesk'; font-weight:600; color:var(--muted-2); }
   .avatar{
     width:36px; height:36px; border-radius:50%; background: var(--surface-2);
     display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;
+    overflow:hidden;
   }
   .avatar img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
   .row-main{ flex:1; min-width:0; }
-  .row-name{ font-size:14.5px; font-weight:500; }
+  .row-name{ font-size:14.5px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .row-sub{ font-size:11px; color:var(--muted-2); font-family:'JetBrains Mono'; }
   .row-value{ text-align:right; font-family:'JetBrains Mono'; font-size:13px; }
+  .row.top1 .rank, .row.top2 .rank, .row.top3 .rank { color: var(--gold); font-size: 15px; }
+  .row.top1 .primary { color: var(--gold); }
 
   .feed-item{
     background: var(--surface-2); padding:16px; border-radius:12px; margin-bottom:14px;
     font-size:14.5px; line-height:1.55;
+  }
+  @media (max-width: 640px) {
+    .feed-item { 
+      padding: 14px; 
+      font-size: 14px; 
+      margin-bottom: 12px;
+    }
+    #liveFeed { max-height: 380px; }
   }
   .feed-meta{ 
     font-size:11.5px; color:var(--muted-2); display:flex; justify-content:space-between; 
@@ -167,11 +225,18 @@
   .chart-container{
     max-width:1100px; margin: 0 auto 40px; padding: 0 20px;
   }
+  @media (max-width: 640px) {
+    .chart-container { margin-bottom: 30px; padding: 0 16px; }
+    #activityChart { height: 180px !important; }
+  }
 
   footer{
     max-width:1100px; margin:0 auto; padding: 40px 20px 60px;
     border-top:1px solid var(--line);
     display:flex; flex-direction:column; gap:20px; align-items:flex-start;
+  }
+  @media (max-width: 640px) {
+    footer { padding: 32px 16px 50px; gap: 24px; }
   }
   @media (min-width: 640px){
     footer{ flex-direction:row; align-items:center; justify-content:space-between; }
@@ -183,6 +248,15 @@
   }
 
   .empty-state{ color:var(--muted); font-size:13px; text-align:center; padding: 50px 20px; line-height:1.6; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface-2);
+    padding: 2px 8px;
+    border-radius: 9999px;
+    align-self: flex-start;
+  }
 </style>
 </head>
 <body>
@@ -194,14 +268,14 @@
     <div class="brand-mark">₿</div>
     <div class="brand-name">BCHnostr Pulse <span>· by CashCompass</span></div>
   </div>
-  <nav class="links">
+  <nav class="links" style="display: flex; gap: 20px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
     <a href="https://cashcompass.space" target="_blank" rel="noopener">cashcompass.space</a>
   </nav>
 </header>
 
 <section class="hero">
-  <div class="eyebrow"><span class="dot-live"></span> Live from wss://relay.bchnostr.com</div>
+  <div class="eyebrow" id="liveStatus"><span class="dot-live" id="liveDot"></span> <span id="liveStatusText">Live from wss://relay.bchnostr.com</span></div>
   <h1>Who's keeping BCHnostr alive.</h1>
   <p>A stronger pulse of the BCHnostr community — real-time activity, most active voices, and network insights.</p>
 </section>
@@ -215,9 +289,9 @@
 </div>
 
 <div class="stats">
-  <div class="stat-card"><div class="num mono" id="statNotes">—</div><div class="label">Notes counted</div></div>
+  <div class="stat-card"><div class="num mono" id="statNotes">—</div><div class="label">Unique notes seen</div></div>
   <div class="stat-card"><div class="num mono" id="statAuthors">—</div><div class="label">Unique authors</div></div>
-  <div class="stat-card"><div class="num mono" id="statActivity">—</div><div class="label">24h notes</div></div>
+  <div class="stat-card"><div class="num mono" id="statActivity">—</div><div class="label">Notes in window</div></div>
 </div>
 
 <div class="controls">
@@ -235,7 +309,7 @@
       <h2>Live Notes</h2>
       <div class="tag">real-time feed</div>
     </div>
-    <div id="liveFeed" style="max-height:480px; overflow-y:auto; padding-right:8px;"></div>
+    <div id="liveFeed" style="max-height:420px; overflow-y:auto; padding-right:8px;"></div>
   </div>
 
   <div class="board">
@@ -252,7 +326,7 @@
     <div class="board-head">
       <h2>Activity Over Time</h2>
     </div>
-    <canvas id="activityChart" height="120"></canvas>
+    <canvas id="activityChart" height="160"></canvas>
   </div>
 </div>
 
@@ -268,44 +342,114 @@
 </footer>
 
 <script>
-const CONFIG = { RELAY_URL: 'wss://relay.bchnostr.com', MAX_NOTES: 800, TOP_N: 12 };
+const CONFIG = {
+  RELAY_URL: 'wss://relay.bchnostr.com',
+  MAX_NOTES: 1500,
+  TOP_N: 12,
+  QUERY_TIMEOUT_MS: 14000,
+  POLL_MS: 45000,
+  PULSE_MAX_ITEMS: 12,
+  PULSE_RECONNECT_BASE_MS: 3000,
+  PULSE_RECONNECT_MAX_MS: 30000
+};
 
 function shortNpub(hex){ return hex ? hex.slice(0,8)+'…'+hex.slice(-4) : 'unknown'; }
 function escapeHtml(str){ return (str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function fmtNum(n){ return new Intl.NumberFormat('en-US').format(n || 0); }
 
-let notesCount = 0, authorsSet = new Set(), recentNotes = [], profiles = new Map(), chartInstance;
+// allNotes: Map<eventId, event> — deduped store of every note we've ever seen,
+// so repeated polling of an overlapping time window never double-counts.
+let allNotes = new Map();
+let profiles = new Map();
+let chartInstance;
+let currentWindowHours = 24;
+let isLoadingWindow = false;
+let pulseWs = null;
+let pulseReconnectDelay = CONFIG.PULSE_RECONNECT_BASE_MS;
+let pulseReconnectTimer = null;
 
+function setLiveStatus(ok, text){
+  const dot = document.getElementById('liveDot');
+  const label = document.getElementById('liveStatusText');
+  dot.classList.toggle('err', !ok);
+  label.textContent = text;
+}
+
+// --- Live scrolling ticker at the top of the page ---
 function startPulseFeed(){
   const track = document.getElementById('pulseTrack');
   let items = [];
-  let ws, subId = 'live'+Date.now();
+  const subId = 'live' + Date.now();
 
-  try{
-    ws = new WebSocket(CONFIG.RELAY_URL);
-    ws.onopen = () => ws.send(JSON.stringify(['REQ', subId, {kinds:[1], limit:25}]));
-    ws.onmessage = (msg) => {
+  function connect(){
+    try{
+      pulseWs = new WebSocket(CONFIG.RELAY_URL);
+    }catch(e){
+      scheduleReconnect();
+      return;
+    }
+
+    pulseWs.onopen = () => {
+      pulseReconnectDelay = CONFIG.PULSE_RECONNECT_BASE_MS;
+      setLiveStatus(true, 'Live from ' + CONFIG.RELAY_URL);
+      pulseWs.send(JSON.stringify(['REQ', subId, {kinds:[1], limit:25}]));
+    };
+
+    pulseWs.onmessage = (msg) => {
       try{
         const data = JSON.parse(msg.data);
-        if(data[0]==='EVENT' && data[1]===subId){
+        if(data[0] === 'EVENT' && data[1] === subId){
           const ev = data[2];
-          const text = (ev.content||'').trim().slice(0,68);
+          const text = (ev.content || '').trim().slice(0, 68);
           if(text){
-            items.unshift({name: shortNpub(ev.pubkey), text});
-            if(items.length>12) items.pop();
+            const profile = profiles.get(ev.pubkey);
+            items.unshift({ name: profile?.name || shortNpub(ev.pubkey), text });
+            if(items.length > CONFIG.PULSE_MAX_ITEMS) items.pop();
             const html = items.map(i => `<span><span class="who">${escapeHtml(i.name)}</span> — ${escapeHtml(i.text)}</span>`).join('');
             track.innerHTML = html + html;
           }
         }
-      }catch(e){}
+      }catch(e){ /* ignore malformed relay messages */ }
     };
-  }catch(e){}
+
+    pulseWs.onerror = () => setLiveStatus(false, 'Connection issue — retrying…');
+    pulseWs.onclose = () => {
+      setLiveStatus(false, 'Disconnected — retrying…');
+      scheduleReconnect();
+    };
+  }
+
+  function scheduleReconnect(){
+    if(pulseReconnectTimer) return;
+    pulseReconnectTimer = setTimeout(() => {
+      pulseReconnectTimer = null;
+      pulseReconnectDelay = Math.min(pulseReconnectDelay * 1.6, CONFIG.PULSE_RECONNECT_MAX_MS);
+      connect();
+    }, pulseReconnectDelay);
+  }
+
+  connect();
 }
 
+// --- One-shot relay query: opens a socket, collects events until EOSE or timeout,
+// always sends CLOSE and closes the socket afterward so connections don't leak. ---
 async function queryRelay(filters){
   return new Promise(resolve => {
-    let ws, events=[], done=false, subId='q'+Date.now();
-    const timer = setTimeout(()=> {done=true; resolve(events);}, 14000);
+    const subId = 'q' + Date.now() + Math.random().toString(36).slice(2, 6);
+    let events = [];
+    let ws;
+    let settled = false;
+
+    const finish = () => {
+      if(settled) return;
+      settled = true;
+      clearTimeout(timer);
+      try{ ws && ws.send(JSON.stringify(['CLOSE', subId])); }catch(e){}
+      try{ ws && ws.close(); }catch(e){}
+      resolve(events);
+    };
+
+    const timer = setTimeout(finish, CONFIG.QUERY_TIMEOUT_MS);
 
     try{
       ws = new WebSocket(CONFIG.RELAY_URL);
@@ -313,18 +457,22 @@ async function queryRelay(filters){
       ws.onmessage = m => {
         try{
           const d = JSON.parse(m.data);
-          if(d[0]==='EVENT' && d[1]===subId) events.push(d[2]);
-          else if(d[0]==='EOSE' && d[1]===subId){ clearTimeout(timer); done=true; resolve(events); }
+          if(d[0] === 'EVENT' && d[1] === subId) events.push(d[2]);
+          else if(d[0] === 'EOSE' && d[1] === subId) finish();
         }catch(e){}
       };
-      ws.onerror = ws.onclose = () => {clearTimeout(timer); resolve(events);};
-    }catch(e){ resolve(events); }
+      ws.onerror = finish;
+      ws.onclose = finish;
+    }catch(e){
+      finish();
+    }
   });
 }
 
 async function fetchProfiles(pubkeys){
-  if(!pubkeys.length) return;
-  const events = await queryRelay([{kinds:[0], authors: pubkeys, limit: pubkeys.length}]);
+  const missing = pubkeys.filter(pk => !profiles.has(pk));
+  if(!missing.length) return;
+  const events = await queryRelay([{kinds:[0], authors: missing, limit: missing.length}]);
   events.forEach(ev => {
     try{
       const meta = JSON.parse(ev.content);
@@ -335,53 +483,105 @@ async function fetchProfiles(pubkeys){
   });
 }
 
-async function loadActiveUsers(hours = 24){
-  const listEl = document.getElementById('activeList');
-  listEl.innerHTML = '<div class="empty-state">Querying relay…</div>';
+function bucketiseForChart(notesInWindow, hours){
+  // 24h -> 12 two-hour buckets, 7d -> 14 twelve-hour buckets, 30d -> 15 two-day buckets
+  const bucketCount = 12;
+  const bucketSeconds = Math.ceil((hours * 3600) / bucketCount);
+  const now = Math.floor(Date.now() / 1000);
+  const buckets = Array(bucketCount).fill(0);
 
-  const since = Math.floor(Date.now()/1000) - hours * 3600;
-  const notes = await queryRelay([{kinds:[1], since, limit: CONFIG.MAX_NOTES}]);
-
-  const counts = new Map();
-  notes.forEach(ev => {
-    notesCount++;
-    authorsSet.add(ev.pubkey);
-    counts.set(ev.pubkey, (counts.get(ev.pubkey)||0) + 1);
-    if(recentNotes.length < 40) recentNotes.unshift(ev);
+  notesInWindow.forEach(ev => {
+    const age = now - ev.created_at;
+    const idx = bucketCount - 1 - Math.floor(age / bucketSeconds);
+    if(idx >= 0 && idx < bucketCount) buckets[idx]++;
   });
 
-  document.getElementById('statNotes').textContent = fmtNum(notesCount);
-  document.getElementById('statAuthors').textContent = fmtNum(authorsSet.size);
-  document.getElementById('statActivity').textContent = fmtNum(notes.length);
+  const labels = Array.from({length: bucketCount}, (_, i) => {
+    const secsAgo = (bucketCount - 1 - i) * bucketSeconds;
+    if(hours <= 24) return `${Math.round(secsAgo / 3600)}h`;
+    return `${Math.round(secsAgo / 86400)}d`;
+  });
 
-  const ranked = [...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0, CONFIG.TOP_N);
-  await fetchProfiles(ranked.map(([p])=>p));
+  return { labels, buckets };
+}
+
+function updateChart(notesInWindow, hours){
+  const { labels, buckets } = bucketiseForChart(notesInWindow, hours);
+  chartInstance.data.labels = labels;
+  chartInstance.data.datasets[0].data = buckets;
+  chartInstance.update();
+}
+
+async function loadActiveUsers(hours){
+  if(isLoadingWindow) return; // guard against overlapping requests from rapid window switches
+  isLoadingWindow = true;
+  currentWindowHours = hours;
+
+  document.querySelectorAll('#windowSelect button').forEach(b => b.disabled = true);
+  const listEl = document.getElementById('activeList');
+  listEl.innerHTML = '<div class="empty-state">Querying relay…</div>';
+  document.getElementById('refreshNote').textContent = 'refreshing…';
+
+  const since = Math.floor(Date.now() / 1000) - hours * 3600;
+  const notes = await queryRelay([{ kinds: [1], since, limit: CONFIG.MAX_NOTES }]);
+
+  // Dedup into the master store instead of blindly accumulating counters.
+  notes.forEach(ev => {
+    if(!allNotes.has(ev.id)) allNotes.set(ev.id, ev);
+  });
+
+  // Trim the master store so memory doesn't grow unbounded over a long session.
+  if(allNotes.size > CONFIG.MAX_NOTES * 3){
+    const sorted = [...allNotes.entries()].sort((a, b) => b[1].created_at - a[1].created_at);
+    allNotes = new Map(sorted.slice(0, CONFIG.MAX_NOTES * 2));
+  }
+
+  const notesInWindow = [...allNotes.values()].filter(ev => ev.created_at >= since);
+  const authorsInWindow = new Set(notesInWindow.map(ev => ev.pubkey));
+
+  document.getElementById('statNotes').textContent = fmtNum(allNotes.size);
+  document.getElementById('statAuthors').textContent = fmtNum(authorsInWindow.size);
+  document.getElementById('statActivity').textContent = fmtNum(notesInWindow.length);
+
+  const counts = new Map();
+  notesInWindow.forEach(ev => counts.set(ev.pubkey, (counts.get(ev.pubkey) || 0) + 1));
+  const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, CONFIG.TOP_N);
+
+  await fetchProfiles(ranked.map(([p]) => p));
 
   let html = '';
   ranked.forEach(([pubkey, count], i) => {
     const profile = profiles.get(pubkey) || {};
     const name = profile.name || shortNpub(pubkey);
-    const avatar = profile.picture ? `<img src="${escapeHtml(profile.picture)}" alt="">` : shortNpub(pubkey)[0].toUpperCase();
-    const rankClass = i < 3 ? `top${i+1}` : '';
+    const avatar = profile.picture
+      ? `<img src="${escapeHtml(profile.picture)}" alt="" onerror="this.parentElement.textContent='${escapeHtml(shortNpub(pubkey)[0].toUpperCase())}'">`
+      : shortNpub(pubkey)[0].toUpperCase();
+    const rankClass = i < 3 ? `top${i + 1}` : '';
     html += `
       <div class="row ${rankClass}">
-        <div class="rank">${i+1}</div>
+        <div class="rank">${i + 1}</div>
         <div class="avatar">${avatar}</div>
         <div class="row-main">
           <div class="row-name">${escapeHtml(name)}</div>
           <div class="row-sub">${shortNpub(pubkey)}</div>
         </div>
-        <div class="row-value"><span class="primary">${fmtNum(count)}</span><span class="secondary">notes</span></div>
+        <div class="row-value"><span class="primary">${fmtNum(count)}</span><span class="secondary"> notes</span></div>
       </div>`;
   });
-  listEl.innerHTML = html || '<div class="empty-state">No activity yet</div>';
+  listEl.innerHTML = html || '<div class="empty-state">No activity in this window yet</div>';
 
-  updateLiveFeed();
+  updateLiveFeed(notesInWindow);
+  updateChart(notesInWindow, hours);
+
+  document.getElementById('refreshNote').textContent = 'updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  document.querySelectorAll('#windowSelect button').forEach(b => b.disabled = false);
+  isLoadingWindow = false;
 }
 
-function updateLiveFeed(){
+function updateLiveFeed(notesInWindow){
   const container = document.getElementById('liveFeed');
-  const html = recentNotes.slice(0, 10).map(note => {
+  const recent = [...notesInWindow].sort((a, b) => b.created_at - a.created_at).slice(0, 10);
+  const html = recent.map(note => {
     const profile = profiles.get(note.pubkey) || {};
     const name = profile.name || shortNpub(note.pubkey);
     return `
@@ -400,14 +600,22 @@ function initChart(){
   const ctx = document.getElementById('activityChart');
   chartInstance = new Chart(ctx, {
     type: 'line',
-    data: { labels: Array.from({length:12}, (_,i)=>`${11-i}h`), datasets: [{ label:'Notes', data:Array(12).fill(4), borderColor:'#17C583', tension:0.4, borderWidth:3 }] },
-    options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'#223129'}}} }
+    data: {
+      labels: Array.from({length:12}, (_,i)=>`${11-i}h`),
+      datasets: [{ label:'Notes', data: Array(12).fill(0), borderColor:'#17C583', backgroundColor: 'rgba(23,197,131,0.08)', fill: true, tension:0.4, borderWidth:3, pointRadius: 0 }]
+    },
+    options: {
+      responsive:true,
+      maintainAspectRatio: false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true, grid:{color:'#223129'}, ticks:{color: '#536860'}}, x:{grid:{color:'#223129'}, ticks:{color: '#536860'}} }
+    }
   });
 }
 
 document.getElementById('windowSelect').addEventListener('click', e => {
   const btn = e.target.closest('button');
-  if(!btn) return;
+  if(!btn || btn.disabled) return;
   document.querySelectorAll('#windowSelect button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   loadActiveUsers(Number(btn.dataset.hours));
@@ -417,7 +625,7 @@ async function init(){
   startPulseFeed();
   initChart();
   await loadActiveUsers(24);
-  setInterval(() => loadActiveUsers(24), 45000);
+  setInterval(() => loadActiveUsers(currentWindowHours), CONFIG.POLL_MS);
 }
 
 window.onload = init;
