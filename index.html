@@ -518,14 +518,31 @@ async function queryRelay(filters){
 async function fetchProfiles(pubkeys){
   const missing = pubkeys.filter(pk => !profiles.has(pk));
   if(!missing.length) return;
-  const events = await queryRelay([{kinds:[0], authors: missing, limit: missing.length}]);
+  // Ask for more than one event per author — relays often hold onto older
+  // revisions too, and a tight limit can get truncated before every author's
+  // metadata event is returned.
+  const events = await queryRelay([{ kinds: [0], authors: missing, limit: missing.length * 4 }]);
+
+  // Some events may be stale copies of a profile; keep only the most recent
+  // (highest created_at) per author instead of last-one-wins by array order.
+  const latestByAuthor = new Map();
   events.forEach(ev => {
+    const existing = latestByAuthor.get(ev.pubkey);
+    if(!existing || ev.created_at > existing.created_at) latestByAuthor.set(ev.pubkey, ev);
+  });
+
+  latestByAuthor.forEach((ev, pubkey) => {
     try{
       const meta = JSON.parse(ev.content);
-      if(meta.name || meta.display_name){
-        profiles.set(ev.pubkey, { name: meta.name || meta.display_name || shortNpub(ev.pubkey), picture: meta.picture });
+      // Different clients populate different fields — widen the fallback
+      // chain so a profile isn't skipped just because it used "username"
+      // instead of "name", or only set a nip05 handle.
+      const displayName = meta.name || meta.display_name || meta.username
+        || (meta.nip05 ? meta.nip05.split('@')[0] : null);
+      if(displayName){
+        profiles.set(pubkey, { name: displayName, picture: meta.picture });
       }
-    }catch(e){}
+    }catch(e){ /* malformed metadata JSON — leave as hex fallback */ }
   });
 }
 
