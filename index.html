@@ -157,6 +157,65 @@
   .window-select button.active{ background: var(--green); color:#06110C; font-weight:600; }
   .refresh-note{ color: var(--muted-2); font-size:12px; }
 
+  .growth-strip{
+    max-width:1100px; margin: 20px auto 0; padding: 0 20px;
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;
+  }
+  .growth-card{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 20px;
+  }
+  @media (max-width: 640px) {
+    .growth-card { padding: 14px 16px; }
+  }
+  .growth-card .num{ font-family:'Space Grotesk'; font-size:22px; font-weight:600; }
+  @media (max-width: 640px) { .growth-card .num { font-size: 19px; } }
+  .growth-card .label{ color:var(--muted); font-size:11.5px; margin-top:6px; text-transform:uppercase; letter-spacing:0.05em; }
+  .growth-card .trend{
+    font-size:12px; margin-top:8px; font-family:'JetBrains Mono';
+    display:flex; align-items:center; gap:5px;
+  }
+  .growth-card .trend.up{ color: var(--green); }
+  .growth-card .trend.down{ color: var(--red); }
+  .growth-card .trend.flat{ color: var(--muted-2); }
+
+  .hashtag-cloud{ display:flex; flex-wrap:wrap; gap:10px; align-content:flex-start; }
+  .hashtag-chip{
+    display:inline-flex; align-items:center; gap:7px;
+    background: var(--surface-2); border:1px solid var(--line); border-radius:9999px;
+    padding: 7px 13px; font-family:'JetBrains Mono'; line-height:1;
+  }
+  .hashtag-chip .count{ color:var(--muted-2); font-size:0.82em; }
+  .hashtag-chip.rank1{ border-color: var(--gold); }
+  .hashtag-chip.rank1 .tagname{ color: var(--gold); }
+  .hashtag-chip.rank2, .hashtag-chip.rank3{ border-color: var(--green-dim); }
+  @media (max-width: 380px) {
+    .hashtag-chip { padding: 6px 11px; }
+  }
+
+  .thread-item{
+    background: var(--surface-2); padding:14px 16px; border-radius:12px; margin-bottom:12px;
+    min-width:0; overflow-wrap:break-word; word-break:break-word;
+  }
+  @media (max-width: 640px) {
+    .thread-item { padding: 12px; margin-bottom: 10px; }
+    #threadList { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+  }
+  .thread-meta{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    margin-bottom:8px; font-family:'JetBrains Mono'; font-size:11.5px; color:var(--muted-2);
+  }
+  .thread-meta .thread-author{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .thread-badge{
+    flex-shrink:0; background: var(--green); color:#06110C; font-weight:600;
+    border-radius:9999px; padding:2px 10px; font-size:11px; white-space:nowrap;
+  }
+  .thread-content{
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+    overflow-wrap:break-word; word-break:break-word; font-size:14px; line-height:1.5;
+  }
+  @media (max-width: 640px) { .thread-content { font-size: 13.5px; } }
+
   .boards{
     max-width:1100px; margin: 18px auto 60px; padding: 0 20px;
     display:grid; grid-template-columns: 1fr; gap: 20px;
@@ -316,7 +375,7 @@
   </div>
   <nav class="links" style="display: flex; gap: 20px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">cashcompass.space</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">cashcompass.space</a>
   </nav>
 </header>
 
@@ -349,6 +408,12 @@
   <div class="refresh-note mono" id="refreshNote">—</div>
 </div>
 
+<div class="growth-strip" id="growthStrip">
+  <div class="growth-card" id="growthNotes"><div class="num mono">—</div><div class="label">Notes vs previous period</div></div>
+  <div class="growth-card" id="growthAuthors"><div class="num mono">—</div><div class="label">Active authors vs previous period</div></div>
+  <div class="growth-card" id="growthNewPosters"><div class="num mono">—</div><div class="label">New posters vs previous period</div></div>
+</div>
+
 <div class="boards">
   <div class="board">
     <div class="board-head">
@@ -364,6 +429,22 @@
       <div class="tag">by notes posted</div>
     </div>
     <div id="activeList"><div class="empty-state">Querying relay…</div></div>
+  </div>
+
+  <div class="board">
+    <div class="board-head">
+      <h2>Trending Hashtags</h2>
+      <div class="tag">this window</div>
+    </div>
+    <div id="hashtagCloud" class="hashtag-cloud"><div class="empty-state">Querying relay…</div></div>
+  </div>
+
+  <div class="board">
+    <div class="board-head">
+      <h2>Trending Conversations</h2>
+      <div class="tag">by reply count</div>
+    </div>
+    <div id="threadList"><div class="empty-state">Querying relay…</div></div>
   </div>
 </div>
 
@@ -383,7 +464,7 @@
   </div>
   <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted);">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">CashCompass</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">CashCompass</a>
   </div>
 </footer>
 
@@ -392,6 +473,9 @@ const CONFIG = {
   RELAY_URL: 'wss://relay.bchnostr.com',
   MAX_NOTES: 1500,
   TOP_N: 12,
+  HASHTAG_TOP_N: 16,
+  THREAD_TOP_N: 6,
+  THREAD_MIN_REPLIES: 2,
   QUERY_TIMEOUT_MS: 14000,
   POLL_MS: 45000,
   PULSE_MAX_ITEMS: 12,
@@ -402,6 +486,7 @@ const CONFIG = {
 function shortNpub(hex){ return hex ? hex.slice(0,8)+'…'+hex.slice(-4) : 'unknown'; }
 function escapeHtml(str){ return (str||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function fmtNum(n){ return new Intl.NumberFormat('en-US').format(n || 0); }
+function truncate(str, n){ str = str || ''; return str.length > n ? str.slice(0, n).trimEnd() + '…' : str; }
 
 // allNotes: Map<eventId, event> — deduped store of every note we've ever seen,
 // so repeated polling of an overlapping time window never double-counts.
@@ -575,6 +660,116 @@ function updateChart(notesInWindow, hours){
   chartInstance.update();
 }
 
+// --- Trending hashtags ---
+// Primary source is NIP-12 't' tags; we also sweep the note text for inline
+// #hashtags since not every client tags them properly. Each note contributes
+// a hashtag at most once (a Set per-note) so one spammy note can't dominate.
+function extractHashtagsFromNote(ev){
+  const tags = new Set();
+  (ev.tags || []).forEach(t => {
+    if(t[0] === 't' && t[1]) tags.add(t[1].toLowerCase());
+  });
+  const inline = (ev.content || '').match(/#(\w{2,})/g) || [];
+  inline.forEach(m => tags.add(m.slice(1).toLowerCase()));
+  return tags;
+}
+
+function computeTrendingHashtags(notesInWindow){
+  const counts = new Map();
+  notesInWindow.forEach(ev => {
+    extractHashtagsFromNote(ev).forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1));
+  });
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, CONFIG.HASHTAG_TOP_N);
+}
+
+function renderHashtags(ranked){
+  const el = document.getElementById('hashtagCloud');
+  if(!ranked.length){ el.innerHTML = '<div class="empty-state">No hashtags in this window yet</div>'; return; }
+  const maxCount = ranked[0][1];
+  el.innerHTML = ranked.map(([tag, count], i) => {
+    // Scale font size by relative popularity for a simple tag-cloud feel.
+    const size = (12 + (count / maxCount) * 6).toFixed(1);
+    const rankClass = i < 3 ? `rank${i + 1}` : '';
+    return `<span class="hashtag-chip ${rankClass}" style="font-size:${size}px"><span class="tagname">#${escapeHtml(tag)}</span><span class="count">${fmtNum(count)}</span></span>`;
+  }).join('');
+}
+
+// --- Trending conversations ---
+// Nostr threading (NIP-10): a reply tags its root event with an 'e' tag
+// marked "root" when clients follow the modern convention. Older clients
+// just list 'e' tags positionally — first is root, last is the direct
+// parent — so we fall back to that when no explicit marker is present.
+function getRootId(ev){
+  const eTags = (ev.tags || []).filter(t => t[0] === 'e' && t[1]);
+  if(!eTags.length) return null;
+  const marked = eTags.find(t => t[3] === 'root');
+  return marked ? marked[1] : eTags[0][1];
+}
+
+function computeTrendingThreads(notesInWindow){
+  const threads = new Map(); // rootId -> { count, lastAt, participants: Set }
+  notesInWindow.forEach(ev => {
+    const rootId = getRootId(ev);
+    if(!rootId || rootId === ev.id) return; // skip top-level notes and odd self-references
+    const t = threads.get(rootId) || { count: 0, lastAt: 0, participants: new Set() };
+    t.count++;
+    t.lastAt = Math.max(t.lastAt, ev.created_at);
+    t.participants.add(ev.pubkey);
+    threads.set(rootId, t);
+  });
+  return [...threads.entries()]
+    .filter(([, t]) => t.count >= CONFIG.THREAD_MIN_REPLIES)
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, CONFIG.THREAD_TOP_N);
+}
+
+function renderThreads(ranked){
+  const el = document.getElementById('threadList');
+  if(!ranked.length){ el.innerHTML = '<div class="empty-state">No active conversation threads yet</div>'; return; }
+  el.innerHTML = ranked.map(([rootId, t]) => {
+    const rootEvent = allNotes.get(rootId); // only known if we've actually seen the opening note
+    const profile = rootEvent ? profiles.get(rootEvent.pubkey) : null;
+    const author = profile?.name || (rootEvent ? shortNpub(rootEvent.pubkey) : 'unknown thread starter');
+    const snippet = rootEvent ? truncate(rootEvent.content, 180) : `Root note ${shortNpub(rootId)} (opening note not seen by this relay query)`;
+    return `
+      <div class="thread-item">
+        <div class="thread-meta">
+          <span class="thread-author">${escapeHtml(author)}</span>
+          <span class="thread-badge">${fmtNum(t.count)} replies · ${fmtNum(t.participants.size)} people</span>
+        </div>
+        <div class="thread-content">${escapeHtml(snippet)}</div>
+      </div>`;
+  }).join('');
+}
+
+// --- Community growth: compare the selected window against the equal-length
+// period immediately before it. "New posters" means authors who posted in
+// the current window but not the previous one — a proxy for renewed/new
+// activity, not a claim about account creation date. ---
+function pctChange(current, previous){
+  if(previous === 0) return current > 0 ? { label: 'new activity', dir: 'up' } : { label: 'no change', dir: 'flat' };
+  const pct = ((current - previous) / previous) * 100;
+  const dir = pct > 1 ? 'up' : pct < -1 ? 'down' : 'flat';
+  const sign = pct > 0 ? '+' : '';
+  return { label: `${sign}${pct.toFixed(0)}% vs previous period`, dir };
+}
+
+function growthCardHtml(value, trend){
+  const arrow = trend.dir === 'up' ? '▲' : trend.dir === 'down' ? '▼' : '•';
+  return `<div class="num mono">${value}</div><div class="trend ${trend.dir}">${arrow} ${escapeHtml(trend.label)}</div>`;
+}
+
+function renderGrowth(notesInWindow, authorsInWindow, prevNotesInWindow, prevAuthorsSet){
+  const notesTrend = pctChange(notesInWindow.length, prevNotesInWindow.length);
+  const authorsTrend = pctChange(authorsInWindow.size, prevAuthorsSet.size);
+  const newPosters = [...authorsInWindow].filter(pk => !prevAuthorsSet.has(pk));
+
+  document.getElementById('growthNotes').innerHTML = growthCardHtml(fmtNum(notesInWindow.length), notesTrend);
+  document.getElementById('growthAuthors').innerHTML = growthCardHtml(fmtNum(authorsInWindow.size), authorsTrend);
+  document.getElementById('growthNewPosters').innerHTML =
+    `<div class="num mono">${fmtNum(newPosters.length)}</div><div class="label">New posters vs previous period</div>`;
+}
+
 async function loadActiveUsers(hours){
   if(isLoadingWindow) return; // guard against overlapping requests from rapid window switches
   isLoadingWindow = true;
@@ -585,11 +780,19 @@ async function loadActiveUsers(hours){
   listEl.innerHTML = '<div class="empty-state">Querying relay…</div>';
   document.getElementById('refreshNote').textContent = 'refreshing…';
 
-  const since = Math.floor(Date.now() / 1000) - hours * 3600;
-  const notes = await queryRelay([{ kinds: [1], since, limit: CONFIG.MAX_NOTES }]);
+  const windowSeconds = hours * 3600;
+  const since = Math.floor(Date.now() / 1000) - windowSeconds;
+  const prevSince = since - windowSeconds;
+
+  // Fetch the current window and the equal-length prior period in parallel
+  // so growth metrics don't cost an extra sequential round trip.
+  const [notes, prevNotes] = await Promise.all([
+    queryRelay([{ kinds: [1], since, limit: CONFIG.MAX_NOTES }]),
+    queryRelay([{ kinds: [1], since: prevSince, until: since, limit: CONFIG.MAX_NOTES }])
+  ]);
 
   // Dedup into the master store instead of blindly accumulating counters.
-  notes.forEach(ev => {
+  [...notes, ...prevNotes].forEach(ev => {
     if(!allNotes.has(ev.id)) allNotes.set(ev.id, ev);
   });
 
@@ -601,6 +804,8 @@ async function loadActiveUsers(hours){
 
   const notesInWindow = [...allNotes.values()].filter(ev => ev.created_at >= since);
   const authorsInWindow = new Set(notesInWindow.map(ev => ev.pubkey));
+  const prevNotesInWindow = [...allNotes.values()].filter(ev => ev.created_at >= prevSince && ev.created_at < since);
+  const prevAuthorsSet = new Set(prevNotesInWindow.map(ev => ev.pubkey));
 
   document.getElementById('statNotes').textContent = fmtNum(allNotes.size);
   document.getElementById('statAuthors').textContent = fmtNum(authorsInWindow.size);
@@ -610,7 +815,14 @@ async function loadActiveUsers(hours){
   notesInWindow.forEach(ev => counts.set(ev.pubkey, (counts.get(ev.pubkey) || 0) + 1));
   const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, CONFIG.TOP_N);
 
-  await fetchProfiles(ranked.map(([p]) => p));
+  const trendingThreads = computeTrendingThreads(notesInWindow);
+
+  // Fetch profiles once for both the leaderboard authors and any thread
+  // root authors we already have the note for, to avoid duplicate relay round trips.
+  const threadRootAuthors = trendingThreads
+    .map(([rootId]) => allNotes.get(rootId)?.pubkey)
+    .filter(Boolean);
+  await fetchProfiles([...new Set([...ranked.map(([p]) => p), ...threadRootAuthors])]);
 
   let html = '';
   ranked.forEach(([pubkey, count], i) => {
@@ -635,6 +847,9 @@ async function loadActiveUsers(hours){
 
   updateLiveFeed(notesInWindow);
   updateChart(notesInWindow, hours);
+  renderHashtags(computeTrendingHashtags(notesInWindow));
+  renderThreads(trendingThreads);
+  renderGrowth(notesInWindow, authorsInWindow, prevNotesInWindow, prevAuthorsSet);
 
   document.getElementById('refreshNote').textContent = 'updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   document.querySelectorAll('#windowSelect button').forEach(b => b.disabled = false);
