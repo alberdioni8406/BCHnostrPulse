@@ -157,6 +157,11 @@
   .window-select button.active{ background: var(--green); color:#06110C; font-weight:600; }
   .refresh-note{ color: var(--muted-2); font-size:12px; }
 
+  .history-note{
+    max-width:1100px; margin: 10px auto 0; padding: 0 20px;
+    color: var(--muted-2); font-size:12px; line-height:1.5;
+  }
+
   .growth-strip{
     max-width:1100px; margin: 20px auto 0; padding: 0 20px;
     display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;
@@ -179,51 +184,61 @@
   .growth-card .trend.down{ color: var(--red); }
   .growth-card .trend.flat{ color: var(--muted-2); }
 
-  .hashtag-cloud{ display:flex; flex-wrap:wrap; gap:10px; align-content:flex-start; }
-  .hashtag-chip{
-    display:inline-flex; align-items:center; gap:7px;
-    background: var(--surface-2); border:1px solid var(--line); border-radius:9999px;
-    padding: 7px 13px; font-family:'JetBrains Mono'; line-height:1;
+  .charts-grid{
+    max-width:1100px; margin: 20px auto 0; padding: 0 20px;
+    display:grid; grid-template-columns: 1fr; gap: 20px;
   }
-  .hashtag-chip .count{ color:var(--muted-2); font-size:0.82em; }
-  .hashtag-chip.rank1{ border-color: var(--gold); }
-  .hashtag-chip.rank1 .tagname{ color: var(--gold); }
-  .hashtag-chip.rank2, .hashtag-chip.rank3{ border-color: var(--green-dim); }
-  @media (max-width: 380px) {
-    .hashtag-chip { padding: 6px 11px; }
+  @media (min-width: 900px){
+    .charts-grid{ grid-template-columns: 1fr 1fr; }
   }
+  .chart-card{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 20px;
+  }
+  @media (max-width: 640px) { .chart-card { padding: 14px; } }
+  .chart-card .board-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
+  .chart-card .board-head h2{ font-size:16px; }
+  .chart-card canvas{ max-height: 200px; }
 
-  .thread-item{
-    background: var(--surface-2); padding:14px 16px; border-radius:12px; margin-bottom:12px;
-    min-width:0; overflow-wrap:break-word; word-break:break-word;
+  .search-bar{
+    max-width:1100px; margin: 18px auto 0; padding: 0 20px;
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center;
   }
+  .search-input-wrap{
+    flex: 1 1 240px; position: relative; min-width: 180px;
+  }
+  .search-input-wrap input{
+    width:100%; background: var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding: 11px 14px 11px 36px; color: var(--text); font-family:'Inter', sans-serif; font-size:14px;
+    outline: none;
+  }
+  .search-input-wrap input:focus{ border-color: var(--green); }
+  .search-input-wrap input::placeholder{ color: var(--muted-2); }
+  .search-input-wrap::before{
+    content:"🔍"; position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    font-size:13px; opacity:0.6; pointer-events:none;
+  }
+  .search-clear{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:var(--muted-2); cursor:pointer; font-size:15px; display:none; padding:4px;
+  }
+  .search-input-wrap.has-value .search-clear{ display:block; }
+  .filter-toggle{ display:flex; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:4px; }
+  .filter-toggle button{
+    background:transparent; border:none; color:var(--muted); font-family:'JetBrains Mono'; font-size:12px;
+    padding:8px 14px; border-radius:7px; cursor:pointer; white-space:nowrap;
+  }
+  .filter-toggle button.active{ background: var(--green); color:#06110C; font-weight:600; }
   @media (max-width: 640px) {
-    .thread-item { padding: 12px; margin-bottom: 10px; }
-    #threadList { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+    .search-bar { padding: 0 16px; gap: 8px; }
+    .filter-toggle button { padding: 9px 11px; font-size: 11.5px; }
   }
-  .thread-meta{
-    display:flex; justify-content:space-between; align-items:center; gap:10px;
-    margin-bottom:8px; font-family:'JetBrains Mono'; font-size:11.5px; color:var(--muted-2);
-  }
-  .thread-meta .thread-author{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .thread-badge{
-    flex-shrink:0; background: var(--green); color:#06110C; font-weight:600;
-    border-radius:9999px; padding:2px 10px; font-size:11px; white-space:nowrap;
-  }
-  .thread-content{
-    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
-    overflow-wrap:break-word; word-break:break-word; font-size:14px; line-height:1.5;
-  }
-  @media (max-width: 640px) { .thread-content { font-size: 13.5px; } }
 
   .boards{
     max-width:1100px; margin: 18px auto 60px; padding: 0 20px;
     display:grid; grid-template-columns: 1fr; gap: 20px;
     width: 100%;
   }
-  /* Tablet+ and desktop: two columns side by side. Raised from 780 to 900 so
-     narrower tablets (e.g. 768px portrait) get the full-width single column
-     instead of two cramped ~350px columns. */
   @media (min-width: 900px){
     .boards{ grid-template-columns: 1fr 1fr; }
   }
@@ -231,7 +246,7 @@
   .board{
     background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
     padding: 20px;
-    min-width: 0; /* prevents grid/flex children from forcing horizontal overflow */
+    min-width: 0;
     overflow: hidden;
   }
   .board-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap: wrap; gap: 8px; }
@@ -246,10 +261,11 @@
 
   .row{
     display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);
-    min-width: 0;
+    min-width: 0; cursor: pointer; border-radius: 8px;
   }
+  .row:hover{ background: rgba(23,197,131,0.05); }
   @media (max-width: 640px) {
-    .row { gap: 8px; padding: 10px 0; }
+    .row { gap: 8px; padding: 10px 6px; }
   }
   @media (max-width: 380px) {
     .row { gap: 6px; }
@@ -292,6 +308,15 @@
   .row.top1 .rank, .row.top2 .rank, .row.top3 .rank { color: var(--gold); font-size: 15px; }
   .row.top1 .primary { color: var(--gold); }
 
+  .row-detail{
+    padding: 4px 10px 14px; margin-top:-4px;
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px;
+    font-family:'JetBrains Mono'; font-size:11.5px;
+    border-bottom:1px solid var(--line);
+  }
+  .row-detail .d-item .d-num{ color: var(--text); font-size:14px; font-weight:600; font-family:'Space Grotesk'; }
+  .row-detail .d-item .d-label{ color: var(--muted-2); margin-top:2px; text-transform:uppercase; letter-spacing:0.04em; }
+
   .feed-item{
     background: var(--surface-2); padding:16px; border-radius:12px; margin-bottom:14px;
     font-size:14.5px; line-height:1.55;
@@ -314,6 +339,7 @@
   }
   .feed-meta .feed-author{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .feed-meta .feed-time{ flex-shrink:0; }
+  .feed-item.is-reply{ border-left: 2px solid var(--green-dim); }
   .feed-content{
     display: -webkit-box;
     -webkit-line-clamp: 5;
@@ -323,15 +349,52 @@
     word-break: break-word;
   }
   @media (min-width: 900px) and (max-width: 1099px) {
-    /* narrower two-column desktop layout: clamp feed text a touch tighter */
     .feed-content{ -webkit-line-clamp: 4; }
   }
 
-  .chart-container{
-    max-width:1100px; margin: 0 auto 40px; padding: 0 20px;
+  .hashtag-cloud{ display:flex; flex-wrap:wrap; gap:10px; align-content:flex-start; }
+  .hashtag-chip{
+    display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+    background: var(--surface-2); border:1px solid var(--line); border-radius:9999px;
+    padding: 7px 13px; font-family:'JetBrains Mono'; line-height:1;
+  }
+  .hashtag-chip:hover{ border-color: var(--green); }
+  .hashtag-chip .count{ color:var(--muted-2); font-size:0.82em; }
+  .hashtag-chip.rank1{ border-color: var(--gold); }
+  .hashtag-chip.rank1 .tagname{ color: var(--gold); }
+  .hashtag-chip.rank2, .hashtag-chip.rank3{ border-color: var(--green-dim); }
+  @media (max-width: 380px) {
+    .hashtag-chip { padding: 6px 11px; }
+  }
+
+  .thread-item{
+    background: var(--surface-2); padding:14px 16px; border-radius:12px; margin-bottom:12px;
+    min-width:0; overflow-wrap:break-word; word-break:break-word;
   }
   @media (max-width: 640px) {
-    .chart-container { margin-bottom: 30px; padding: 0 16px; }
+    .thread-item { padding: 12px; margin-bottom: 10px; }
+    #threadList { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+  }
+  .thread-meta{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    margin-bottom:8px; font-family:'JetBrains Mono'; font-size:11.5px; color:var(--muted-2);
+  }
+  .thread-meta .thread-author{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .thread-badge{
+    flex-shrink:0; background: var(--green); color:#06110C; font-weight:600;
+    border-radius:9999px; padding:2px 10px; font-size:11px; white-space:nowrap;
+  }
+  .thread-content{
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+    overflow-wrap:break-word; word-break:break-word; font-size:14px; line-height:1.5;
+  }
+  @media (max-width: 640px) { .thread-content { font-size: 13.5px; } }
+
+  .chart-container{
+    max-width:1100px; margin: 0 auto 0; padding: 0 20px;
+  }
+  @media (max-width: 640px) {
+    .chart-container { margin-bottom: 10px; padding: 0 16px; }
     #activityChart { height: 180px !important; }
   }
 
@@ -347,8 +410,8 @@
     footer{ flex-direction:row; align-items:center; justify-content:space-between; }
   }
   .support{ font-size:13px; color:var(--muted); }
-  .support .addr{ 
-    color: var(--green); font-family:'JetBrains Mono'; font-size:12px; 
+  .support .addr{
+    color: var(--green); font-family:'JetBrains Mono'; font-size:12px;
     word-break:break-all; display:block; margin-top:4px;
   }
 
@@ -375,7 +438,7 @@
   </div>
   <nav class="links" style="display: flex; gap: 20px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">cashcompass.space</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">cashcompass.space</a>
   </nav>
 </header>
 
@@ -404,21 +467,56 @@
     <button data-hours="24" class="active">24H</button>
     <button data-hours="168">7D</button>
     <button data-hours="720">30D</button>
+    <button data-hours="2160">90D</button>
   </div>
   <div class="refresh-note mono" id="refreshNote">—</div>
 </div>
+<div class="history-note">History is bounded by what relay.bchnostr.com currently retains and what this dashboard has personally observed since it was opened — it isn't backed by a separate archive.</div>
 
 <div class="growth-strip" id="growthStrip">
   <div class="growth-card" id="growthNotes"><div class="num mono">—</div><div class="label">Notes vs previous period</div></div>
   <div class="growth-card" id="growthAuthors"><div class="num mono">—</div><div class="label">Active authors vs previous period</div></div>
   <div class="growth-card" id="growthNewPosters"><div class="num mono">—</div><div class="label">New posters vs previous period</div></div>
+  <div class="growth-card" id="growthReplyRatio"><div class="num mono">—</div><div class="label">Of notes are replies</div></div>
+</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="board-head"><h2>Author Growth</h2><div class="tag">cumulative, this window</div></div>
+    <canvas id="authorGrowthChart" height="150"></canvas>
+  </div>
+  <div class="chart-card">
+    <div class="board-head"><h2>Activity by Hour of Day</h2><div class="tag">your local time</div></div>
+    <canvas id="hourOfDayChart" height="150"></canvas>
+  </div>
+</div>
+
+<div class="chart-container" style="margin-top:20px;">
+  <div class="board" style="padding-bottom:0;">
+    <div class="board-head">
+      <h2>Activity Over Time</h2>
+    </div>
+    <canvas id="activityChart" height="160"></canvas>
+  </div>
+</div>
+
+<div class="search-bar">
+  <div class="search-input-wrap" id="searchWrap">
+    <input type="text" id="searchInput" placeholder="Search notes, authors, or #hashtags in this window…">
+    <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
+  </div>
+  <div class="filter-toggle" id="feedFilter">
+    <button data-filter="all" class="active">All</button>
+    <button data-filter="root">Notes</button>
+    <button data-filter="reply">Replies</button>
+  </div>
 </div>
 
 <div class="boards">
   <div class="board">
     <div class="board-head">
       <h2>Live Notes</h2>
-      <div class="tag">real-time feed</div>
+      <div class="tag" id="liveFeedTag">real-time feed</div>
     </div>
     <div id="liveFeed" style="max-height:420px; overflow-y:auto; padding-right:8px;"></div>
   </div>
@@ -426,7 +524,7 @@
   <div class="board">
     <div class="board-head">
       <h2>Most Active Users</h2>
-      <div class="tag">by notes posted</div>
+      <div class="tag">tap a user for details</div>
     </div>
     <div id="activeList"><div class="empty-state">Querying relay…</div></div>
   </div>
@@ -434,7 +532,7 @@
   <div class="board">
     <div class="board-head">
       <h2>Trending Hashtags</h2>
-      <div class="tag">this window</div>
+      <div class="tag">tap to filter</div>
     </div>
     <div id="hashtagCloud" class="hashtag-cloud"><div class="empty-state">Querying relay…</div></div>
   </div>
@@ -448,15 +546,6 @@
   </div>
 </div>
 
-<div class="chart-container">
-  <div class="board" style="padding-bottom:0;">
-    <div class="board-head">
-      <h2>Activity Over Time</h2>
-    </div>
-    <canvas id="activityChart" height="160"></canvas>
-  </div>
-</div>
-
 <footer>
   <div class="support">
     Support this project (BCH)<br>
@@ -464,7 +553,7 @@
   </div>
   <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted);">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">CashCompass</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">CashCompass</a>
   </div>
 </footer>
 
@@ -479,8 +568,8 @@ const CONFIG = {
   QUERY_TIMEOUT_MS: 14000,
   POLL_MS: 45000,
   PULSE_MAX_ITEMS: 12,
-  PULSE_RECONNECT_BASE_MS: 3000,
-  PULSE_RECONNECT_MAX_MS: 30000
+  RECONNECT_BASE_MS: 3000,
+  RECONNECT_MAX_MS: 30000
 };
 
 function shortNpub(hex){ return hex ? hex.slice(0,8)+'…'+hex.slice(-4) : 'unknown'; }
@@ -492,12 +581,13 @@ function truncate(str, n){ str = str || ''; return str.length > n ? str.slice(0,
 // so repeated polling of an overlapping time window never double-counts.
 let allNotes = new Map();
 let profiles = new Map();
-let chartInstance;
+let chartInstance, authorGrowthChartInstance, hourOfDayChartInstance;
 let currentWindowHours = 24;
 let isLoadingWindow = false;
-let pulseWs = null;
-let pulseReconnectDelay = CONFIG.PULSE_RECONNECT_BASE_MS;
-let pulseReconnectTimer = null;
+let currentNotesInWindow = [];
+let searchTerm = '';
+let feedFilterMode = 'all'; // 'all' | 'root' | 'reply'
+let expandedUserRow = null;
 
 function setLiveStatus(ok, text){
   const dot = document.getElementById('liveDot');
@@ -506,97 +596,131 @@ function setLiveStatus(ok, text){
   label.textContent = text;
 }
 
+// ---------------------------------------------------------------------------
+// Shared relay connection: a single persistent WebSocket, multiplexing every
+// one-shot query AND the live ticker subscription over it via distinct
+// subIds. This replaces opening a brand-new socket (fresh TCP+TLS handshake)
+// for every single query, which is the main lever for faster loads and
+// smoother repeat polling.
+// ---------------------------------------------------------------------------
+const Relay = {
+  ws: null,
+  ready: false,
+  reconnectDelay: CONFIG.RECONNECT_BASE_MS,
+  reconnectTimer: null,
+  waiters: [],          // resolvers waiting for the socket to open
+  pending: new Map(),   // subId -> { events, timer, resolve, live, onEvent }
+  liveSubs: [],         // { subId, filters, onEvent } re-issued after reconnect
+
+  connect(){
+    try{
+      this.ws = new WebSocket(CONFIG.RELAY_URL);
+    }catch(e){
+      this._scheduleReconnect();
+      return;
+    }
+
+    this.ws.onopen = () => {
+      this.ready = true;
+      this.reconnectDelay = CONFIG.RECONNECT_BASE_MS;
+      setLiveStatus(true, 'Live from ' + CONFIG.RELAY_URL);
+      this.waiters.forEach(resolve => resolve());
+      this.waiters = [];
+      // Re-establish any live subscriptions (e.g. the ticker) that were
+      // running before a drop.
+      this.liveSubs.forEach(sub => this._send(['REQ', sub.subId, ...sub.filters]));
+    };
+
+    this.ws.onmessage = (msg) => {
+      let data;
+      try{ data = JSON.parse(msg.data); }catch(e){ return; }
+      const [type, subId, payload] = data;
+      const entry = this.pending.get(subId);
+      if(type === 'EVENT'){
+        if(entry && entry.live) entry.onEvent(payload);
+        else if(entry) entry.events.push(payload);
+      } else if(type === 'EOSE'){
+        if(entry && !entry.live) this._finish(subId);
+      }
+    };
+
+    this.ws.onerror = () => setLiveStatus(false, 'Connection issue — retrying…');
+    this.ws.onclose = () => {
+      this.ready = false;
+      setLiveStatus(false, 'Disconnected — retrying…');
+      // Any in-flight one-shot queries won't get an EOSE now — resolve them
+      // with whatever partial results they already have instead of hanging.
+      [...this.pending.keys()].forEach(subId => {
+        const entry = this.pending.get(subId);
+        if(entry && !entry.live) this._finish(subId);
+      });
+      this._scheduleReconnect();
+    };
+  },
+
+  _scheduleReconnect(){
+    if(this.reconnectTimer) return;
+    this.reconnectTimer = setTimeout(() => {
+      this.reconnectTimer = null;
+      this.reconnectDelay = Math.min(this.reconnectDelay * 1.6, CONFIG.RECONNECT_MAX_MS);
+      this.connect();
+    }, this.reconnectDelay);
+  },
+
+  _send(msg){
+    try{ this.ws && this.ws.readyState === 1 && this.ws.send(JSON.stringify(msg)); }catch(e){}
+  },
+
+  _finish(subId){
+    const entry = this.pending.get(subId);
+    if(!entry) return;
+    clearTimeout(entry.timer);
+    this.pending.delete(subId);
+    this._send(['CLOSE', subId]);
+    entry.resolve(entry.events);
+  },
+
+  ensureOpen(){
+    if(this.ready) return Promise.resolve();
+    return new Promise(resolve => this.waiters.push(resolve));
+  },
+
+  // One-shot query: resolves with the collected events once EOSE arrives
+  // (or the timeout fires), then closes that subscription.
+  async query(filters, timeoutMs){
+    await this.ensureOpen();
+    const subId = 'q' + Date.now() + Math.random().toString(36).slice(2, 6);
+    return new Promise(resolve => {
+      const timer = setTimeout(() => this._finish(subId), timeoutMs || CONFIG.QUERY_TIMEOUT_MS);
+      this.pending.set(subId, { events: [], timer, resolve, live: false });
+      this._send(['REQ', subId, ...filters]);
+    });
+  },
+
+  // Long-lived subscription (the ticker): onEvent fires for every matching
+  // note as it arrives, indefinitely, and is automatically re-subscribed
+  // after a reconnect.
+  subscribeLive(filters, onEvent){
+    const subId = 'live' + Date.now();
+    this.pending.set(subId, { events: [], timer: null, resolve: () => {}, live: true, onEvent });
+    this.liveSubs.push({ subId, filters, onEvent });
+    if(this.ready) this._send(['REQ', subId, ...filters]);
+    return subId;
+  }
+};
+
 // --- Live scrolling ticker at the top of the page ---
 function startPulseFeed(){
   const track = document.getElementById('pulseTrack');
   let items = [];
-  const subId = 'live' + Date.now();
-
-  function connect(){
-    try{
-      pulseWs = new WebSocket(CONFIG.RELAY_URL);
-    }catch(e){
-      scheduleReconnect();
-      return;
-    }
-
-    pulseWs.onopen = () => {
-      pulseReconnectDelay = CONFIG.PULSE_RECONNECT_BASE_MS;
-      setLiveStatus(true, 'Live from ' + CONFIG.RELAY_URL);
-      pulseWs.send(JSON.stringify(['REQ', subId, {kinds:[1], limit:25}]));
-    };
-
-    pulseWs.onmessage = (msg) => {
-      try{
-        const data = JSON.parse(msg.data);
-        if(data[0] === 'EVENT' && data[1] === subId){
-          const ev = data[2];
-          const text = (ev.content || '').trim().slice(0, 68);
-          if(text){
-            const profile = profiles.get(ev.pubkey);
-            items.unshift({ name: profile?.name || shortNpub(ev.pubkey), text });
-            if(items.length > CONFIG.PULSE_MAX_ITEMS) items.pop();
-            const html = items.map(i => `<span><span class="who">${escapeHtml(i.name)}</span> — ${escapeHtml(i.text)}</span>`).join('');
-            track.innerHTML = html + html;
-          }
-        }
-      }catch(e){ /* ignore malformed relay messages */ }
-    };
-
-    pulseWs.onerror = () => setLiveStatus(false, 'Connection issue — retrying…');
-    pulseWs.onclose = () => {
-      setLiveStatus(false, 'Disconnected — retrying…');
-      scheduleReconnect();
-    };
-  }
-
-  function scheduleReconnect(){
-    if(pulseReconnectTimer) return;
-    pulseReconnectTimer = setTimeout(() => {
-      pulseReconnectTimer = null;
-      pulseReconnectDelay = Math.min(pulseReconnectDelay * 1.6, CONFIG.PULSE_RECONNECT_MAX_MS);
-      connect();
-    }, pulseReconnectDelay);
-  }
-
-  connect();
-}
-
-// --- One-shot relay query: opens a socket, collects events until EOSE or timeout,
-// always sends CLOSE and closes the socket afterward so connections don't leak. ---
-async function queryRelay(filters){
-  return new Promise(resolve => {
-    const subId = 'q' + Date.now() + Math.random().toString(36).slice(2, 6);
-    let events = [];
-    let ws;
-    let settled = false;
-
-    const finish = () => {
-      if(settled) return;
-      settled = true;
-      clearTimeout(timer);
-      try{ ws && ws.send(JSON.stringify(['CLOSE', subId])); }catch(e){}
-      try{ ws && ws.close(); }catch(e){}
-      resolve(events);
-    };
-
-    const timer = setTimeout(finish, CONFIG.QUERY_TIMEOUT_MS);
-
-    try{
-      ws = new WebSocket(CONFIG.RELAY_URL);
-      ws.onopen = () => ws.send(JSON.stringify(['REQ', subId, ...filters]));
-      ws.onmessage = m => {
-        try{
-          const d = JSON.parse(m.data);
-          if(d[0] === 'EVENT' && d[1] === subId) events.push(d[2]);
-          else if(d[0] === 'EOSE' && d[1] === subId) finish();
-        }catch(e){}
-      };
-      ws.onerror = finish;
-      ws.onclose = finish;
-    }catch(e){
-      finish();
-    }
+  Relay.subscribeLive([{ kinds: [1], limit: 25 }], ev => {
+    const text = (ev.content || '').trim().slice(0, 68);
+    if(!text) return;
+    const profile = profiles.get(ev.pubkey);
+    items.unshift({ name: profile?.name || shortNpub(ev.pubkey), text });
+    if(items.length > CONFIG.PULSE_MAX_ITEMS) items.pop();
+    const html = items.map(i => `<span><span class="who">${escapeHtml(i.name)}</span> — ${escapeHtml(i.text)}</span>`).join('');
+    track.innerHTML = html + html;
   });
 }
 
@@ -606,10 +730,8 @@ async function fetchProfiles(pubkeys){
   // Ask for more than one event per author — relays often hold onto older
   // revisions too, and a tight limit can get truncated before every author's
   // metadata event is returned.
-  const events = await queryRelay([{ kinds: [0], authors: missing, limit: missing.length * 4 }]);
+  const events = await Relay.query([{ kinds: [0], authors: missing, limit: missing.length * 4 }]);
 
-  // Some events may be stale copies of a profile; keep only the most recent
-  // (highest created_at) per author instead of last-one-wins by array order.
   const latestByAuthor = new Map();
   events.forEach(ev => {
     const existing = latestByAuthor.get(ev.pubkey);
@@ -619,9 +741,6 @@ async function fetchProfiles(pubkeys){
   latestByAuthor.forEach((ev, pubkey) => {
     try{
       const meta = JSON.parse(ev.content);
-      // Different clients populate different fields — widen the fallback
-      // chain so a profile isn't skipped just because it used "username"
-      // instead of "name", or only set a nip05 handle.
       const displayName = meta.name || meta.display_name || meta.username
         || (meta.nip05 ? meta.nip05.split('@')[0] : null);
       if(displayName){
@@ -632,7 +751,6 @@ async function fetchProfiles(pubkeys){
 }
 
 function bucketiseForChart(notesInWindow, hours){
-  // 24h -> 12 two-hour buckets, 7d -> 14 twelve-hour buckets, 30d -> 15 two-day buckets
   const bucketCount = 12;
   const bucketSeconds = Math.ceil((hours * 3600) / bucketCount);
   const now = Math.floor(Date.now() / 1000);
@@ -660,10 +778,46 @@ function updateChart(notesInWindow, hours){
   chartInstance.update();
 }
 
+// --- Author Growth: cumulative count of distinct authors as the window
+// progresses, bucketed the same way as the activity chart. This is genuine
+// historical shape for whatever span the relay actually returned. ---
+function updateAuthorGrowthChart(notesInWindow, hours){
+  const bucketCount = 12;
+  const bucketSeconds = Math.ceil((hours * 3600) / bucketCount);
+  const now = Math.floor(Date.now() / 1000);
+  const sorted = [...notesInWindow].sort((a, b) => a.created_at - b.created_at);
+  const seen = new Set();
+  const cumulative = Array(bucketCount).fill(0);
+  let pointer = 0;
+
+  for(let i = 0; i < bucketCount; i++){
+    const bucketEnd = now - (bucketCount - 1 - i) * bucketSeconds + bucketSeconds;
+    while(pointer < sorted.length && sorted[pointer].created_at < bucketEnd){
+      seen.add(sorted[pointer].pubkey);
+      pointer++;
+    }
+    cumulative[i] = seen.size;
+  }
+
+  const { labels } = bucketiseForChart(notesInWindow, hours);
+  authorGrowthChartInstance.data.labels = labels;
+  authorGrowthChartInstance.data.datasets[0].data = cumulative;
+  authorGrowthChartInstance.update();
+}
+
+// --- Activity by Hour of Day: reveals the community's daily rhythm,
+// aggregated across the whole selected window (local time). ---
+function updateHourOfDayChart(notesInWindow){
+  const buckets = Array(24).fill(0);
+  notesInWindow.forEach(ev => {
+    const hour = new Date(ev.created_at * 1000).getHours();
+    buckets[hour]++;
+  });
+  hourOfDayChartInstance.data.datasets[0].data = buckets;
+  hourOfDayChartInstance.update();
+}
+
 // --- Trending hashtags ---
-// Primary source is NIP-12 't' tags; we also sweep the note text for inline
-// #hashtags since not every client tags them properly. Each note contributes
-// a hashtag at most once (a Set per-note) so one spammy note can't dominate.
 function extractHashtagsFromNote(ev){
   const tags = new Set();
   (ev.tags || []).forEach(t => {
@@ -687,18 +841,13 @@ function renderHashtags(ranked){
   if(!ranked.length){ el.innerHTML = '<div class="empty-state">No hashtags in this window yet</div>'; return; }
   const maxCount = ranked[0][1];
   el.innerHTML = ranked.map(([tag, count], i) => {
-    // Scale font size by relative popularity for a simple tag-cloud feel.
     const size = (12 + (count / maxCount) * 6).toFixed(1);
     const rankClass = i < 3 ? `rank${i + 1}` : '';
-    return `<span class="hashtag-chip ${rankClass}" style="font-size:${size}px"><span class="tagname">#${escapeHtml(tag)}</span><span class="count">${fmtNum(count)}</span></span>`;
+    return `<span class="hashtag-chip ${rankClass}" style="font-size:${size}px" data-tag="${escapeHtml(tag)}"><span class="tagname">#${escapeHtml(tag)}</span><span class="count">${fmtNum(count)}</span></span>`;
   }).join('');
 }
 
 // --- Trending conversations ---
-// Nostr threading (NIP-10): a reply tags its root event with an 'e' tag
-// marked "root" when clients follow the modern convention. Older clients
-// just list 'e' tags positionally — first is root, last is the direct
-// parent — so we fall back to that when no explicit marker is present.
 function getRootId(ev){
   const eTags = (ev.tags || []).filter(t => t[0] === 'e' && t[1]);
   if(!eTags.length) return null;
@@ -707,10 +856,10 @@ function getRootId(ev){
 }
 
 function computeTrendingThreads(notesInWindow){
-  const threads = new Map(); // rootId -> { count, lastAt, participants: Set }
+  const threads = new Map();
   notesInWindow.forEach(ev => {
     const rootId = getRootId(ev);
-    if(!rootId || rootId === ev.id) return; // skip top-level notes and odd self-references
+    if(!rootId || rootId === ev.id) return;
     const t = threads.get(rootId) || { count: 0, lastAt: 0, participants: new Set() };
     t.count++;
     t.lastAt = Math.max(t.lastAt, ev.created_at);
@@ -727,7 +876,7 @@ function renderThreads(ranked){
   const el = document.getElementById('threadList');
   if(!ranked.length){ el.innerHTML = '<div class="empty-state">No active conversation threads yet</div>'; return; }
   el.innerHTML = ranked.map(([rootId, t]) => {
-    const rootEvent = allNotes.get(rootId); // only known if we've actually seen the opening note
+    const rootEvent = allNotes.get(rootId);
     const profile = rootEvent ? profiles.get(rootEvent.pubkey) : null;
     const author = profile?.name || (rootEvent ? shortNpub(rootEvent.pubkey) : 'unknown thread starter');
     const snippet = rootEvent ? truncate(rootEvent.content, 180) : `Root note ${shortNpub(rootId)} (opening note not seen by this relay query)`;
@@ -742,10 +891,7 @@ function renderThreads(ranked){
   }).join('');
 }
 
-// --- Community growth: compare the selected window against the equal-length
-// period immediately before it. "New posters" means authors who posted in
-// the current window but not the previous one — a proxy for renewed/new
-// activity, not a claim about account creation date. ---
+// --- Community growth: current window vs the equal-length period before it ---
 function pctChange(current, previous){
   if(previous === 0) return current > 0 ? { label: 'new activity', dir: 'up' } : { label: 'no change', dir: 'flat' };
   const pct = ((current - previous) / previous) * 100;
@@ -763,12 +909,116 @@ function renderGrowth(notesInWindow, authorsInWindow, prevNotesInWindow, prevAut
   const notesTrend = pctChange(notesInWindow.length, prevNotesInWindow.length);
   const authorsTrend = pctChange(authorsInWindow.size, prevAuthorsSet.size);
   const newPosters = [...authorsInWindow].filter(pk => !prevAuthorsSet.has(pk));
+  const replyCount = notesInWindow.filter(ev => getRootId(ev)).length;
+  const replyPct = notesInWindow.length ? Math.round((replyCount / notesInWindow.length) * 100) : 0;
 
   document.getElementById('growthNotes').innerHTML = growthCardHtml(fmtNum(notesInWindow.length), notesTrend);
   document.getElementById('growthAuthors').innerHTML = growthCardHtml(fmtNum(authorsInWindow.size), authorsTrend);
   document.getElementById('growthNewPosters').innerHTML =
     `<div class="num mono">${fmtNum(newPosters.length)}</div><div class="label">New posters vs previous period</div>`;
+  document.getElementById('growthReplyRatio').innerHTML =
+    `<div class="num mono">${replyPct}%</div><div class="label">Of notes are replies</div>`;
 }
+
+// --- Search & filtering (client-side, over the already-fetched window) ---
+function noteMatchesSearch(ev, term){
+  if(!term) return true;
+  const t = term.toLowerCase().replace(/^#/, '');
+  if((ev.content || '').toLowerCase().includes(t)) return true;
+  const profile = profiles.get(ev.pubkey);
+  if(profile?.name?.toLowerCase().includes(t)) return true;
+  if(shortNpub(ev.pubkey).toLowerCase().includes(t)) return true;
+  const tags = extractHashtagsFromNote(ev);
+  return [...tags].some(tag => tag.includes(t));
+}
+
+function noteMatchesFeedFilter(ev, mode){
+  const isReply = !!getRootId(ev);
+  if(mode === 'root') return !isReply;
+  if(mode === 'reply') return isReply;
+  return true;
+}
+
+function applyFiltersAndRender(){
+  const filtered = currentNotesInWindow.filter(ev =>
+    noteMatchesFeedFilter(ev, feedFilterMode) && noteMatchesSearch(ev, searchTerm)
+  );
+  updateLiveFeed(filtered);
+
+  const tag = document.getElementById('liveFeedTag');
+  const parts = [];
+  if(feedFilterMode !== 'all') parts.push(feedFilterMode === 'root' ? 'notes only' : 'replies only');
+  if(searchTerm) parts.push(`matching "${searchTerm}"`);
+  tag.textContent = parts.length ? parts.join(' · ') : 'real-time feed';
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchTerm = e.target.value.trim();
+  document.getElementById('searchWrap').classList.toggle('has-value', !!searchTerm);
+  applyFiltersAndRender();
+});
+document.getElementById('searchClear').addEventListener('click', () => {
+  const input = document.getElementById('searchInput');
+  input.value = '';
+  searchTerm = '';
+  document.getElementById('searchWrap').classList.remove('has-value');
+  applyFiltersAndRender();
+});
+document.getElementById('feedFilter').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  document.querySelectorAll('#feedFilter button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  feedFilterMode = btn.dataset.filter;
+  applyFiltersAndRender();
+});
+document.getElementById('hashtagCloud').addEventListener('click', e => {
+  const chip = e.target.closest('.hashtag-chip');
+  if(!chip) return;
+  const tag = chip.dataset.tag;
+  const input = document.getElementById('searchInput');
+  input.value = '#' + tag;
+  searchTerm = tag;
+  document.getElementById('searchWrap').classList.add('has-value');
+  applyFiltersAndRender();
+});
+
+// --- Detailed per-user stats: expands inline under a leaderboard row using
+// data already in memory, so it costs zero extra relay round trips. ---
+function computeUserDetail(pubkey){
+  const notes = currentNotesInWindow.filter(ev => ev.pubkey === pubkey);
+  const replyCount = notes.filter(ev => getRootId(ev)).length;
+  const threadsParticipated = new Set(notes.map(ev => getRootId(ev)).filter(Boolean)).size;
+  const avgLen = notes.length ? Math.round(notes.reduce((sum, ev) => sum + (ev.content || '').length, 0) / notes.length) : 0;
+  const timestamps = notes.map(ev => ev.created_at);
+  const firstSeen = timestamps.length ? new Date(Math.min(...timestamps) * 1000) : null;
+  const lastSeen = timestamps.length ? new Date(Math.max(...timestamps) * 1000) : null;
+  const fmtTime = d => d ? d.toLocaleString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
+
+  return `
+    <div class="row-detail">
+      <div class="d-item"><div class="d-num">${notes.length ? Math.round((replyCount / notes.length) * 100) : 0}%</div><div class="d-label">Replies</div></div>
+      <div class="d-item"><div class="d-num">${fmtNum(threadsParticipated)}</div><div class="d-label">Threads joined</div></div>
+      <div class="d-item"><div class="d-num">${fmtNum(avgLen)}</div><div class="d-label">Avg. note length</div></div>
+      <div class="d-item"><div class="d-num">${fmtTime(firstSeen)}</div><div class="d-label">First seen (window)</div></div>
+      <div class="d-item"><div class="d-num">${fmtTime(lastSeen)}</div><div class="d-label">Last seen (window)</div></div>
+    </div>`;
+}
+
+document.getElementById('activeList').addEventListener('click', e => {
+  const row = e.target.closest('.row[data-pubkey]');
+  if(!row) return;
+  const pubkey = row.dataset.pubkey;
+  const existingDetail = row.nextElementSibling;
+  if(existingDetail && existingDetail.classList.contains('row-detail')){
+    existingDetail.remove();
+    expandedUserRow = null;
+    return;
+  }
+  document.querySelectorAll('#activeList .row-detail').forEach(d => d.remove());
+  row.insertAdjacentHTML('afterend', computeUserDetail(pubkey));
+  expandedUserRow = pubkey;
+});
 
 async function loadActiveUsers(hours){
   if(isLoadingWindow) return; // guard against overlapping requests from rapid window switches
@@ -784,19 +1034,17 @@ async function loadActiveUsers(hours){
   const since = Math.floor(Date.now() / 1000) - windowSeconds;
   const prevSince = since - windowSeconds;
 
-  // Fetch the current window and the equal-length prior period in parallel
-  // so growth metrics don't cost an extra sequential round trip.
+  // Current window and the equal-length prior period fetched in parallel
+  // over the same shared connection — no extra handshake cost either way.
   const [notes, prevNotes] = await Promise.all([
-    queryRelay([{ kinds: [1], since, limit: CONFIG.MAX_NOTES }]),
-    queryRelay([{ kinds: [1], since: prevSince, until: since, limit: CONFIG.MAX_NOTES }])
+    Relay.query([{ kinds: [1], since, limit: CONFIG.MAX_NOTES }]),
+    Relay.query([{ kinds: [1], since: prevSince, until: since, limit: CONFIG.MAX_NOTES }])
   ]);
 
-  // Dedup into the master store instead of blindly accumulating counters.
   [...notes, ...prevNotes].forEach(ev => {
     if(!allNotes.has(ev.id)) allNotes.set(ev.id, ev);
   });
 
-  // Trim the master store so memory doesn't grow unbounded over a long session.
   if(allNotes.size > CONFIG.MAX_NOTES * 3){
     const sorted = [...allNotes.entries()].sort((a, b) => b[1].created_at - a[1].created_at);
     allNotes = new Map(sorted.slice(0, CONFIG.MAX_NOTES * 2));
@@ -807,6 +1055,8 @@ async function loadActiveUsers(hours){
   const prevNotesInWindow = [...allNotes.values()].filter(ev => ev.created_at >= prevSince && ev.created_at < since);
   const prevAuthorsSet = new Set(prevNotesInWindow.map(ev => ev.pubkey));
 
+  currentNotesInWindow = notesInWindow;
+
   document.getElementById('statNotes').textContent = fmtNum(allNotes.size);
   document.getElementById('statAuthors').textContent = fmtNum(authorsInWindow.size);
   document.getElementById('statActivity').textContent = fmtNum(notesInWindow.length);
@@ -816,12 +1066,7 @@ async function loadActiveUsers(hours){
   const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, CONFIG.TOP_N);
 
   const trendingThreads = computeTrendingThreads(notesInWindow);
-
-  // Fetch profiles once for both the leaderboard authors and any thread
-  // root authors we already have the note for, to avoid duplicate relay round trips.
-  const threadRootAuthors = trendingThreads
-    .map(([rootId]) => allNotes.get(rootId)?.pubkey)
-    .filter(Boolean);
+  const threadRootAuthors = trendingThreads.map(([rootId]) => allNotes.get(rootId)?.pubkey).filter(Boolean);
   await fetchProfiles([...new Set([...ranked.map(([p]) => p), ...threadRootAuthors])]);
 
   let html = '';
@@ -833,7 +1078,7 @@ async function loadActiveUsers(hours){
       : shortNpub(pubkey)[0].toUpperCase();
     const rankClass = i < 3 ? `top${i + 1}` : '';
     html += `
-      <div class="row ${rankClass}">
+      <div class="row ${rankClass}" data-pubkey="${escapeHtml(pubkey)}">
         <div class="rank">${i + 1}</div>
         <div class="avatar">${avatar}</div>
         <div class="row-main">
@@ -844,12 +1089,15 @@ async function loadActiveUsers(hours){
       </div>`;
   });
   listEl.innerHTML = html || '<div class="empty-state">No activity in this window yet</div>';
+  expandedUserRow = null;
 
-  updateLiveFeed(notesInWindow);
   updateChart(notesInWindow, hours);
+  updateAuthorGrowthChart(notesInWindow, hours);
+  updateHourOfDayChart(notesInWindow);
   renderHashtags(computeTrendingHashtags(notesInWindow));
   renderThreads(trendingThreads);
   renderGrowth(notesInWindow, authorsInWindow, prevNotesInWindow, prevAuthorsSet);
+  applyFiltersAndRender();
 
   document.getElementById('refreshNote').textContent = 'updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   document.querySelectorAll('#windowSelect button').forEach(b => b.disabled = false);
@@ -858,23 +1106,24 @@ async function loadActiveUsers(hours){
 
 function updateLiveFeed(notesInWindow){
   const container = document.getElementById('liveFeed');
-  const recent = [...notesInWindow].sort((a, b) => b.created_at - a.created_at).slice(0, 10);
+  const recent = [...notesInWindow].sort((a, b) => b.created_at - a.created_at).slice(0, 25);
   const html = recent.map(note => {
     const profile = profiles.get(note.pubkey) || {};
     const name = profile.name || shortNpub(note.pubkey);
+    const isReply = !!getRootId(note);
     return `
-      <div class="feed-item">
+      <div class="feed-item ${isReply ? 'is-reply' : ''}">
         <div class="feed-meta">
-          <span class="feed-author">${escapeHtml(name)}</span>
+          <span class="feed-author">${escapeHtml(name)}${isReply ? ' · reply' : ''}</span>
           <span class="feed-time">${new Date(note.created_at * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
         </div>
         <div class="feed-content">${escapeHtml(note.content)}</div>
       </div>`;
   }).join('');
-  container.innerHTML = html || '<div class="empty-state">Waiting for new notes…</div>';
+  container.innerHTML = html || '<div class="empty-state">No notes match this filter</div>';
 }
 
-function initChart(){
+function initCharts(){
   const ctx = document.getElementById('activityChart');
   chartInstance = new Chart(ctx, {
     type: 'line',
@@ -883,10 +1132,40 @@ function initChart(){
       datasets: [{ label:'Notes', data: Array(12).fill(0), borderColor:'#17C583', backgroundColor: 'rgba(23,197,131,0.08)', fill: true, tension:0.4, borderWidth:3, pointRadius: 0 }]
     },
     options: {
-      responsive:true,
-      maintainAspectRatio: false,
+      responsive:true, maintainAspectRatio: false,
       plugins:{legend:{display:false}},
       scales:{y:{beginAtZero:true, grid:{color:'#223129'}, ticks:{color: '#536860'}}, x:{grid:{color:'#223129'}, ticks:{color: '#536860'}} }
+    }
+  });
+
+  const growthCtx = document.getElementById('authorGrowthChart');
+  authorGrowthChartInstance = new Chart(growthCtx, {
+    type: 'line',
+    data: {
+      labels: Array.from({length:12}, (_,i)=>`${11-i}h`),
+      datasets: [{ label:'Cumulative authors', data: Array(12).fill(0), borderColor:'#E3B341', backgroundColor:'rgba(227,179,65,0.08)', fill:true, tension:0.35, borderWidth:3, pointRadius:0 }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true, grid:{color:'#223129'}, ticks:{color:'#536860'}}, x:{grid:{color:'#223129'}, ticks:{color:'#536860'}} }
+    }
+  });
+
+  const hourCtx = document.getElementById('hourOfDayChart');
+  hourOfDayChartInstance = new Chart(hourCtx, {
+    type: 'bar',
+    data: {
+      labels: Array.from({length:24}, (_,i)=>`${i}:00`),
+      datasets: [{ label:'Notes', data: Array(24).fill(0), backgroundColor:'#17C583', borderRadius:4, maxBarThickness: 18 }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true, grid:{color:'#223129'}, ticks:{color:'#536860'}},
+        x:{grid:{display:false}, ticks:{color:'#536860', maxRotation:0, autoSkip:true, maxTicksLimit:8}}
+      }
     }
   });
 }
@@ -901,7 +1180,7 @@ document.getElementById('windowSelect').addEventListener('click', e => {
 
 async function init(){
   startPulseFeed();
-  initChart();
+  initCharts();
   await loadActiveUsers(24);
   setInterval(() => loadActiveUsers(currentWindowHours), CONFIG.POLL_MS);
 }
