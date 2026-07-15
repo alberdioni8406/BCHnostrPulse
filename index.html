@@ -1091,9 +1091,13 @@ async function loadActiveUsers(hours){
   listEl.innerHTML = html || '<div class="empty-state">No activity in this window yet</div>';
   expandedUserRow = null;
 
-  updateChart(notesInWindow, hours);
-  updateAuthorGrowthChart(notesInWindow, hours);
-  updateHourOfDayChart(notesInWindow);
+  try{
+    updateChart(notesInWindow, hours);
+    updateAuthorGrowthChart(notesInWindow, hours);
+    updateHourOfDayChart(notesInWindow);
+  }catch(e){
+    console.error('Chart update skipped:', e);
+  }
   renderHashtags(computeTrendingHashtags(notesInWindow));
   renderThreads(trendingThreads);
   renderGrowth(notesInWindow, authorsInWindow, prevNotesInWindow, prevAuthorsSet);
@@ -1179,8 +1183,13 @@ document.getElementById('windowSelect').addEventListener('click', e => {
 });
 
 async function init(){
+  Relay.connect();
   startPulseFeed();
-  initCharts();
+  try{
+    initCharts();
+  }catch(e){
+    console.error('Chart init failed, continuing without charts:', e);
+  }
   await loadActiveUsers(24);
   setInterval(() => loadActiveUsers(currentWindowHours), CONFIG.POLL_MS);
 }
