@@ -445,7 +445,7 @@
   </div>
   <nav class="links" style="display: flex; gap: 20px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">cashcompass.space</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">cashcompass.space</a>
   </nav>
 </header>
 
@@ -520,16 +520,13 @@
       <h2>Live Notes</h2>
       <div class="tag" id="liveFeedTag">real-time feed</div>
     </div>
-    <div id="liveFeed" style="max-height:420px; overflow-y:auto; padding-right:8px;"></div>
+    <div id="liveFeed" style="max-height:420px; overflow-y:auto; padding-right:8px;"><div class="empty-state">Querying relay…</div></div>
   </div>
 
   <div class="board">
     <div class="board-head">
       <h2>Most Active Users</h2>
-      <div class="filter-toggle compact" id="userModeToggle">
-        <button data-mode="posted" class="active">Posted</button>
-        <button data-mode="mentioned">Mentioned</button>
-      </div>
+      <div class="tag">tap a user for details</div>
     </div>
     <div id="activeList"><div class="empty-state">Querying relay…</div></div>
   </div>
@@ -574,7 +571,7 @@
   </div>
   <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted);">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">CashCompass</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">CashCompass</a>
   </div>
 </footer>
 
