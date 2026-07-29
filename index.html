@@ -445,7 +445,7 @@
   </div>
   <nav class="links" style="display: flex; gap: 20px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">cashcompass.space</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">cashcompass.space</a>
   </nav>
 </header>
 
@@ -579,14 +579,6 @@
     </div>
     <div id="mentionList"><div class="empty-state">Querying relay…</div></div>
   </div>
-
-  <div class="board">
-    <div class="board-head">
-      <h2>Posted Via</h2>
-      <div class="tag">by client app</div>
-    </div>
-    <div id="clientCloud" class="hashtag-cloud"><div class="empty-state">Querying relay…</div></div>
-  </div>
 </div>
 
 <footer>
@@ -596,7 +588,7 @@
   </div>
   <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted);">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">CashCompass</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">CashCompass</a>
   </div>
 </footer>
 
@@ -617,7 +609,6 @@ const CONFIG = {
   MENTION_TOP_N: 8,
   REACTION_TOP_N: 6,
   REACTION_CANDIDATE_CAP: 300,
-  CLIENT_TOP_N: 10,
   QUERY_TIMEOUT_MS: 14000,
   POLL_MS: 45000,
   PULSE_MAX_ITEMS: 12,
@@ -1007,29 +998,6 @@ function renderMentions(ranked){
   }).join('');
 }
 
-// --- Posted Via: which Nostr clients/apps are being used, from the
-// informal 'client' tag some clients attach to outgoing notes. Not every
-// client tags itself, so this reflects only notes that do. ---
-function computeClientBreakdown(notesInWindow){
-  const counts = new Map();
-  notesInWindow.forEach(ev => {
-    const clientTag = (ev.tags || []).find(t => t[0] === 'client' && t[1]);
-    if(clientTag) counts.set(clientTag[1], (counts.get(clientTag[1]) || 0) + 1);
-  });
-  return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, CONFIG.CLIENT_TOP_N);
-}
-
-function renderClients(ranked){
-  const el = document.getElementById('clientCloud');
-  if(!ranked.length){ el.innerHTML = '<div class="empty-state">No notes in this window tag which app posted them</div>'; return; }
-  const maxCount = ranked[0][1];
-  el.innerHTML = ranked.map(([name, count], i) => {
-    const size = (12 + (count / maxCount) * 6).toFixed(1);
-    const rankClass = i < 3 ? `rank${i + 1}` : '';
-    return `<span class="hashtag-chip ${rankClass}" style="font-size:${size}px"><span class="tagname">${escapeHtml(name)}</span><span class="count">${fmtNum(count)}</span></span>`;
-  }).join('');
-}
-
 // --- Top Reactions: kind-7 (NIP-25) reaction events tell us which notes
 // actually landed with the community, beyond just reply counts. We only
 // query reactions for root (non-reply) notes to keep the relay filter's
@@ -1313,7 +1281,6 @@ async function loadActiveUsers(hours){
   renderHashtags(computeTrendingHashtags(notesInWindow));
   renderThreads(trendingThreads);
   renderMentions(trendingMentions);
-  renderClients(computeClientBreakdown(notesInWindow));
   renderReactions(topReactions);
   renderGrowth(notesInWindow, authorsInWindow, prevNotesInWindow, prevAuthorsSet);
   applyFiltersAndRender();
