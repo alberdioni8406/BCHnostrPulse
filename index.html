@@ -234,6 +234,8 @@
     padding:8px 14px; border-radius:7px; cursor:pointer; white-space:nowrap;
   }
   .filter-toggle button.active{ background: var(--green); color:#06110C; font-weight:600; }
+  .filter-toggle.compact{ padding:3px; }
+  .filter-toggle.compact button{ padding:6px 11px; font-size:11px; }
   @media (max-width: 640px) {
     .search-bar { padding: 0 16px; gap: 8px; }
     .filter-toggle button { padding: 9px 11px; font-size: 11.5px; }
@@ -357,6 +359,14 @@
     .feed-content{ -webkit-line-clamp: 4; }
   }
 
+  .client-row{ padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .client-row:last-child{ border-bottom: none; }
+  .client-row-head{ display:flex; justify-content:space-between; align-items:baseline; font-size:13.5px; margin-bottom:6px; gap:8px; }
+  .client-row-head .client-name{ font-weight:500; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .client-row-head .client-count{ font-family:'JetBrains Mono'; font-size:11.5px; color:var(--muted-2); flex-shrink:0; }
+  .client-bar-track{ height:6px; border-radius:9999px; background:var(--surface-2); overflow:hidden; }
+  .client-bar-fill{ height:100%; background: linear-gradient(90deg, var(--green-dim), var(--green)); border-radius:9999px; }
+
   .hashtag-cloud{ display:flex; flex-wrap:wrap; gap:10px; align-content:flex-start; }
   .hashtag-chip{
     display:inline-flex; align-items:center; gap:7px; cursor:pointer;
@@ -435,7 +445,7 @@
   </div>
   <nav class="links" style="display: flex; gap: 20px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
-    <a href="https://cashcompass-bch.vercel.app" target="_blank" rel="noopener">cashcompass.space</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">cashcompass.space</a>
   </nav>
 </header>
 
@@ -466,7 +476,13 @@
     <button data-hours="720">30D</button>
     <button data-hours="2160">90D</button>
   </div>
-  <div class="refresh-note mono" id="refreshNote">—</div>
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <div class="refresh-note mono" id="refreshNote">—</div>
+    <div class="filter-toggle compact" id="exportButtons">
+      <button data-export="json">Export JSON</button>
+      <button data-export="csv">Export CSV</button>
+    </div>
+  </div>
 </div>
 <div class="history-note">History is bounded by what relay.bchnostr.com currently retains and what this dashboard has personally observed since it was opened — it isn't backed by a separate archive.</div>
 
@@ -516,7 +532,10 @@
   <div class="board">
     <div class="board-head">
       <h2>Most Active Users</h2>
-      <div class="tag">tap a user for details</div>
+      <div class="filter-toggle compact" id="userModeToggle">
+        <button data-mode="posted" class="active">Posted</button>
+        <button data-mode="mentioned">Mentioned</button>
+      </div>
     </div>
     <div id="activeList"><div class="empty-state">Querying relay…</div></div>
   </div>
@@ -531,10 +550,42 @@
 
   <div class="board">
     <div class="board-head">
+      <h2>Top Nostr Clients</h2>
+      <div class="tag">by client tag</div>
+    </div>
+    <div id="clientList"><div class="empty-state">Querying relay…</div></div>
+  </div>
+
+  <div class="board">
+    <div class="board-head">
       <h2>Trending Conversations</h2>
       <div class="tag">by reply count</div>
     </div>
     <div id="threadList"><div class="empty-state">Querying relay…</div></div>
+  </div>
+
+  <div class="board">
+    <div class="board-head">
+      <h2>Top Reactions</h2>
+      <div class="tag">most engaged notes</div>
+    </div>
+    <div id="reactionList"><div class="empty-state">Querying relay…</div></div>
+  </div>
+
+  <div class="board">
+    <div class="board-head">
+      <h2>Most Mentioned</h2>
+      <div class="tag">who's talked about</div>
+    </div>
+    <div id="mentionList"><div class="empty-state">Querying relay…</div></div>
+  </div>
+
+  <div class="board">
+    <div class="board-head">
+      <h2>Posted Via</h2>
+      <div class="tag">by client app</div>
+    </div>
+    <div id="clientCloud" class="hashtag-cloud"><div class="empty-state">Querying relay…</div></div>
   </div>
 </div>
 
@@ -545,7 +596,7 @@
   </div>
   <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted);">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
-    <a href="https://cashcompass-bch.vercel.app" target="_blank" rel="noopener">CashCompass</a>
+    <a href="https://cashcompass.space" target="_blank" rel="noopener">CashCompass</a>
   </div>
 </footer>
 
@@ -563,6 +614,10 @@ const CONFIG = {
   HASHTAG_TOP_N: 16,
   THREAD_TOP_N: 6,
   THREAD_MIN_REPLIES: 2,
+  MENTION_TOP_N: 8,
+  REACTION_TOP_N: 6,
+  REACTION_CANDIDATE_CAP: 300,
+  CLIENT_TOP_N: 10,
   QUERY_TIMEOUT_MS: 14000,
   POLL_MS: 45000,
   PULSE_MAX_ITEMS: 12,
@@ -918,6 +973,124 @@ function renderThreads(ranked){
   }).join('');
 }
 
+// --- Most Mentioned: who the community is talking about, via NIP-10 'p'
+// (mention) tags -- distinct from Most Active Users, which is who's posting. ---
+function computeTrendingMentions(notesInWindow){
+  const counts = new Map();
+  notesInWindow.forEach(ev => {
+    const mentioned = new Set((ev.tags || []).filter(t => t[0] === 'p' && t[1]).map(t => t[1]));
+    mentioned.forEach(pk => { if(pk !== ev.pubkey) counts.set(pk, (counts.get(pk) || 0) + 1); });
+  });
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, CONFIG.MENTION_TOP_N);
+}
+
+function renderMentions(ranked){
+  const el = document.getElementById('mentionList');
+  if(!ranked.length){ el.innerHTML = '<div class="empty-state">No mentions in this window yet</div>'; return; }
+  el.innerHTML = ranked.map(([pubkey, count], i) => {
+    const profile = profiles.get(pubkey) || {};
+    const name = profile.name || shortNpub(pubkey);
+    const avatar = profile.picture
+      ? `<img src="${escapeHtml(profile.picture)}" alt="" onerror="this.parentElement.textContent='${escapeHtml(shortNpub(pubkey)[0].toUpperCase())}'">`
+      : shortNpub(pubkey)[0].toUpperCase();
+    const rankClass = i < 3 ? `top${i + 1}` : '';
+    return `
+      <div class="row ${rankClass}" style="cursor:default;">
+        <div class="rank">${i + 1}</div>
+        <div class="avatar">${avatar}</div>
+        <div class="row-main">
+          <div class="row-name">${escapeHtml(name)}</div>
+          <div class="row-sub">${shortNpub(pubkey)}</div>
+        </div>
+        <div class="row-value"><span class="primary">${fmtNum(count)}</span><span class="secondary">mentions</span></div>
+      </div>`;
+  }).join('');
+}
+
+// --- Posted Via: which Nostr clients/apps are being used, from the
+// informal 'client' tag some clients attach to outgoing notes. Not every
+// client tags itself, so this reflects only notes that do. ---
+function computeClientBreakdown(notesInWindow){
+  const counts = new Map();
+  notesInWindow.forEach(ev => {
+    const clientTag = (ev.tags || []).find(t => t[0] === 'client' && t[1]);
+    if(clientTag) counts.set(clientTag[1], (counts.get(clientTag[1]) || 0) + 1);
+  });
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, CONFIG.CLIENT_TOP_N);
+}
+
+function renderClients(ranked){
+  const el = document.getElementById('clientCloud');
+  if(!ranked.length){ el.innerHTML = '<div class="empty-state">No notes in this window tag which app posted them</div>'; return; }
+  const maxCount = ranked[0][1];
+  el.innerHTML = ranked.map(([name, count], i) => {
+    const size = (12 + (count / maxCount) * 6).toFixed(1);
+    const rankClass = i < 3 ? `rank${i + 1}` : '';
+    return `<span class="hashtag-chip ${rankClass}" style="font-size:${size}px"><span class="tagname">${escapeHtml(name)}</span><span class="count">${fmtNum(count)}</span></span>`;
+  }).join('');
+}
+
+// --- Top Reactions: kind-7 (NIP-25) reaction events tell us which notes
+// actually landed with the community, beyond just reply counts. We only
+// query reactions for root (non-reply) notes to keep the relay filter's
+// event-id list bounded, since replies are already covered by Trending
+// Conversations. ---
+function getReactedNoteId(ev){
+  const eTags = (ev.tags || []).filter(t => t[0] === 'e' && t[1]);
+  return eTags.length ? eTags[eTags.length - 1][1] : null;
+}
+
+async function fetchTopReactions(notesInWindow, since){
+  const candidateIds = notesInWindow
+    .filter(ev => !getRootId(ev))
+    .sort((a, b) => b.created_at - a.created_at)
+    .slice(0, CONFIG.REACTION_CANDIDATE_CAP)
+    .map(ev => ev.id);
+  if(!candidateIds.length) return [];
+
+  const reactions = await Relay.query([{ kinds: [7], '#e': candidateIds, since, limit: CONFIG.MAX_NOTES }]);
+  const counts = new Map();       // noteId -> count
+  const symbolCounts = new Map(); // noteId -> Map<symbol, count>
+
+  reactions.forEach(ev => {
+    const noteId = getReactedNoteId(ev);
+    if(!noteId || !candidateIds.includes(noteId)) return;
+    counts.set(noteId, (counts.get(noteId) || 0) + 1);
+    const symbol = (ev.content || '').trim() || '+';
+    const bySymbol = symbolCounts.get(noteId) || new Map();
+    bySymbol.set(symbol, (bySymbol.get(symbol) || 0) + 1);
+    symbolCounts.set(noteId, bySymbol);
+  });
+
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, CONFIG.REACTION_TOP_N)
+    .map(([noteId, count]) => {
+      const bySymbol = symbolCounts.get(noteId);
+      const topSymbol = bySymbol ? [...bySymbol.entries()].sort((a, b) => b[1] - a[1])[0][0] : '+';
+      return [noteId, count, topSymbol === '+' ? '👍' : topSymbol];
+    });
+}
+
+function renderReactions(ranked){
+  const el = document.getElementById('reactionList');
+  if(!ranked.length){ el.innerHTML = '<div class="empty-state">No reactions on this window notes yet</div>'; return; }
+  el.innerHTML = ranked.map(([noteId, count, symbol]) => {
+    const note = allNotes.get(noteId);
+    const profile = note ? profiles.get(note.pubkey) : null;
+    const author = profile?.name || (note ? shortNpub(note.pubkey) : 'unknown author');
+    const snippet = note ? truncate(note.content, 180) : `Note ${shortNpub(noteId)}`;
+    return `
+      <div class="thread-item">
+        <div class="thread-meta">
+          <span class="thread-author">${escapeHtml(author)}</span>
+          <span class="thread-badge">${escapeHtml(symbol)} ${fmtNum(count)}</span>
+        </div>
+        <div class="thread-content">${escapeHtml(snippet)}</div>
+      </div>`;
+  }).join('');
+}
+
 // --- Community growth: current window vs the equal-length period before it ---
 function pctChange(current, previous){
   if(previous === 0) return current > 0 ? { label: 'new activity', dir: 'up' } : { label: 'no change', dir: 'flat' };
@@ -1094,7 +1267,19 @@ async function loadActiveUsers(hours){
 
   const trendingThreads = computeTrendingThreads(notesInWindow);
   const threadRootAuthors = trendingThreads.map(([rootId]) => allNotes.get(rootId)?.pubkey).filter(Boolean);
-  await fetchProfiles([...new Set([...ranked.map(([p]) => p), ...threadRootAuthors])]);
+  const trendingMentions = computeTrendingMentions(notesInWindow);
+
+  // Reactions need one more relay round trip (they aren't in the kind:1
+  // note payload), so fetch them alongside the profile batch instead of
+  // sequentially after it.
+  const [, topReactions] = await Promise.all([
+    fetchProfiles([...new Set([...ranked.map(([p]) => p), ...threadRootAuthors, ...trendingMentions.map(([p]) => p)])]),
+    fetchTopReactions(notesInWindow, since)
+  ]);
+  // Reaction authors' profiles may still be missing (they weren't in the
+  // batch above since we don't know which notes got reacted to until now).
+  const reactionAuthors = topReactions.map(([noteId]) => allNotes.get(noteId)?.pubkey).filter(Boolean);
+  await fetchProfiles(reactionAuthors);
 
   let html = '';
   ranked.forEach(([pubkey, count], i) => {
@@ -1127,6 +1312,9 @@ async function loadActiveUsers(hours){
   }
   renderHashtags(computeTrendingHashtags(notesInWindow));
   renderThreads(trendingThreads);
+  renderMentions(trendingMentions);
+  renderClients(computeClientBreakdown(notesInWindow));
+  renderReactions(topReactions);
   renderGrowth(notesInWindow, authorsInWindow, prevNotesInWindow, prevAuthorsSet);
   applyFiltersAndRender();
 
