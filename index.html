@@ -476,13 +476,7 @@
     <button data-hours="720">30D</button>
     <button data-hours="2160">90D</button>
   </div>
-  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-    <div class="refresh-note mono" id="refreshNote">—</div>
-    <div class="filter-toggle compact" id="exportButtons">
-      <button data-export="json">Export JSON</button>
-      <button data-export="csv">Export CSV</button>
-    </div>
-  </div>
+  <div class="refresh-note mono" id="refreshNote">—</div>
 </div>
 <div class="history-note">History is bounded by what relay.bchnostr.com currently retains and what this dashboard has personally observed since it was opened — it isn't backed by a separate archive.</div>
 
@@ -546,14 +540,6 @@
       <div class="tag">tap to filter</div>
     </div>
     <div id="hashtagCloud" class="hashtag-cloud"><div class="empty-state">Querying relay…</div></div>
-  </div>
-
-  <div class="board">
-    <div class="board-head">
-      <h2>Top Nostr Clients</h2>
-      <div class="tag">by client tag</div>
-    </div>
-    <div id="clientList"><div class="empty-state">Querying relay…</div></div>
   </div>
 
   <div class="board">
