@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertise with BCHnostr Pulse</title>
+<meta name="description" content="Sponsor BCHnostr Pulse to support ongoing development, infrastructure, and new tools for the Bitcoin Cash Nostr ecosystem.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #0B1210;
+    --surface: #121C19;
+    --surface-2: #17221E;
+    --line: #223129;
+    --green: #17C583;
+    --green-dim: #0E7F58;
+    --gold: #E3B341;
+    --text: #EAF2EF;
+    --muted: #7C9089;
+    --muted-2: #536860;
+    --radius: 14px;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0; background: var(--bg); color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.6;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.01em; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{ color: inherit; }
+  .bg-grid{
+    position: fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(23,197,131,0.10) 1px, transparent 0);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%);
+  }
+  header.top{
+    max-width: 900px; margin: 0 auto; padding: 24px 20px 0;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{
+    width:34px; height:34px; border-radius:8px;
+    background: linear-gradient(135deg, var(--green), var(--green-dim));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk'; font-weight:700; color:#06110C; font-size:16px;
+  }
+  .brand-name{ font-size:17px; font-weight:600; }
+  .brand-name span{ color: var(--muted); font-weight:400; }
+  .back-link{ font-size:13px; color: var(--muted); text-decoration:none; }
+  .back-link:hover{ color: var(--green); }
+
+  main{ max-width:760px; margin:0 auto; padding: 48px 20px 80px; }
+  @media (max-width:640px){ main{ padding: 36px 16px 60px; } }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--green); margin-bottom:14px;
+  }
+  h1{ font-size: clamp(28px, 5vw, 42px); line-height:1.15; max-width: 620px; }
+  .lede{ color: var(--muted); font-size:16px; max-width: 600px; margin-top:16px; line-height:1.65; }
+
+  .section{ margin-top: 48px; }
+  .section h2{ font-size: 20px; margin-bottom: 16px; }
+  .section p{ color: var(--muted); font-size:15px; line-height:1.7; margin: 0 0 12px; }
+
+  .grid{ display:grid; grid-template-columns: 1fr; gap:14px; margin-top:16px; }
+  @media (min-width:640px){ .grid{ grid-template-columns: 1fr 1fr; } }
+  .card{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card h3{ font-size:15px; margin-bottom:8px; }
+  .card p{ font-size:13.5px; margin:0; color: var(--muted); }
+  .card .spec{ font-family:'JetBrains Mono', monospace; font-size:12px; color: var(--green); margin-top:10px; }
+
+  .principle-list{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .principle-list li{
+    display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color: var(--text);
+  }
+  .principle-list li::before{ content:"✓"; color: var(--green); font-weight:700; flex-shrink:0; }
+  .principle-list .no::before{ content:"✕"; color: var(--muted-2); }
+  .principle-list .no{ color: var(--muted); }
+
+  .cta-box{
+    margin-top: 48px; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 28px; text-align:center;
+  }
+  .cta-box h2{ font-size:20px; margin-bottom:10px; }
+  .cta-box p{ color: var(--muted); font-size:14.5px; margin: 0 0 20px; }
+  .cta-button{
+    display:inline-flex; align-items:center; gap:8px;
+    background: var(--green); color:#06110C; font-weight:600; font-size:14px;
+    padding: 12px 24px; border-radius: 9999px; text-decoration:none;
+  }
+  .cta-button:hover{ background: #1ed695; }
+  .cta-note{ margin-top:14px; font-size:12.5px; color: var(--muted-2); }
+
+  footer{
+    max-width:760px; margin:0 auto; padding: 32px 20px 60px;
+    border-top:1px solid var(--line); color: var(--muted); font-size:13px;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<header class="top">
+  <a class="brand" href="./index.html">
+    <div class="brand-mark">₿</div>
+    <div class="brand-name">BCHnostr Pulse <span>· by CashCompass</span></div>
+  </a>
+  <a class="back-link" href="./index.html">← Back to the live dashboard</a>
+</header>
+
+<main>
+  <div class="eyebrow">Sponsorship</div>
+  <h1>Advertise with BCHnostr Pulse.</h1>
+  <p class="lede">BCHnostr Pulse runs as a free, open dashboard for the Bitcoin Cash Nostr community — and keeping it running, accurate, and improving takes ongoing work. Sponsorship is how that work gets funded without leaning on donations alone.</p>
+
+  <div class="section">
+    <h2>Where your support goes</h2>
+    <p>Sponsor revenue funds relay monitoring infrastructure, hosting, and the time spent building the features this community actually uses — from the live activity feed to trending conversations and community growth tracking. It also funds new tools for the wider BCH ecosystem beyond this dashboard.</p>
+  </div>
+
+  <div class="section">
+    <h2>Placements</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Top banner</h3>
+        <p>Placed just below the header, above the live dashboard content — the first thing a visitor sees.</p>
+        <div class="spec">728×90 desktop · 320×100 mobile</div>
+      </div>
+      <div class="card">
+        <h3>Footer banner</h3>
+        <p>Placed at the close of the page, after someone has spent time browsing the dashboard's data.</p>
+        <div class="spec">728×90 desktop · 320×100 mobile</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>What this isn't</h2>
+    <p>This is sponsorship, not traditional ad-tech. No tracking pixels, no auto-playing media, nothing that interrupts what someone came here to do.</p>
+    <ul class="principle-list">
+      <li>A single static banner image with your link</li>
+      <li>Clearly labeled "Sponsored" for transparency</li>
+      <li>Lazy-loaded so it never slows the dashboard down</li>
+      <li class="no">No popups or overlays</li>
+      <li class="no">No auto-play video or audio</li>
+      <li class="no">No visitor tracking beyond a standard click-through</li>
+    </ul>
+  </div>
+
+  <div class="cta-box">
+    <h2>Interested in sponsoring?</h2>
+    <p>Get in touch and we'll walk through availability, placement, and rates.</p>
+    <a class="cta-button" href="https://x.com/alberdioni8406_" target="_blank" rel="noopener">Message @alberdioni8406_ on X →</a>
+    <div class="cta-note">Sponsor slots are reviewed manually — reach out and we'll follow up directly.</div>
+  </div>
+</main>
+
+<footer>
+  Support BCHnostr Pulse directly (BCH): <span class="mono">bitcoincash:qrtv37u522gz8a5lezfqk5vukly93cu7gc8tn09040</span>
+</footer>
+
+</body>
+</html>
