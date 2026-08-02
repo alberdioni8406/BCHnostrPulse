@@ -842,10 +842,31 @@ const Relay = {
 };
 
 // --- Live scrolling ticker at the top of the page ---
+// Feeds a freshly-arrived note (from the live subscription) into the shared
+// note store and, if it falls in the currently selected window, straight
+// into the Live Notes board and stat counters right away — instead of
+// waiting for the next 45s poll to pick it up.
+function handleIncomingLiveNote(ev){
+  if(allNotes.has(ev.id)) return;
+  allNotes.set(ev.id, ev);
+
+  const since = Math.floor(Date.now() / 1000) - currentWindowHours * 3600;
+  if(ev.created_at < since) return;
+
+  currentNotesInWindow.push(ev);
+  const authorsInWindow = new Set(currentNotesInWindow.map(n => n.pubkey));
+  document.getElementById('statNotes').textContent = fmtNum(allNotes.size);
+  document.getElementById('statActivity').textContent = fmtNum(currentNotesInWindow.length);
+  document.getElementById('statAuthors').textContent = fmtNum(authorsInWindow.size);
+  applyFiltersAndRender();
+}
+
 function startPulseFeed(){
   const track = document.getElementById('pulseTrack');
   let items = [];
   Relay.subscribeLive([{ kinds: [1], limit: 25 }], ev => {
+    handleIncomingLiveNote(ev);
+
     const text = (ev.content || '').trim().slice(0, 68);
     if(!text) return;
     const profile = profiles.get(ev.pubkey);
