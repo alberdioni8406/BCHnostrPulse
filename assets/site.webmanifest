@@ -4,8 +4,8 @@
   "description": "Live Bitcoin Cash Nostr Observatory — real-time community activity, conversations, and network signals.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0B1210",
-  "theme_color": "#17C583",
+  "background_color": "#050807",
+  "theme_color": "#1AE08A",
   "icons": [
     {
       "src": "/assets/icons/android-chrome-192x192.png",
