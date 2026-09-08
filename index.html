@@ -3,8 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BCHnostr Pulse — Community Live</title>
-<meta name="description" content="Live pulse of the BCHnostr community: active voices, real-time notes, and network health.">
+<title>BCHnostr Pulse — Live Bitcoin Cash Nostr Observatory</title>
+<meta name="description" content="A real-time observatory for the BCHnostr community. Track live activity, active voices, conversations, hashtags and network signals on Bitcoin Cash Nostr.">
+<meta name="author" content="CashCompass">
+<meta name="application-name" content="BCHnostr Pulse">
+<meta name="theme-color" content="#17C583">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.bchnostr.live/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.bchnostr.live/">
+<meta property="og:site_name" content="BCHnostr Pulse">
+<meta property="og:title" content="BCHnostr Pulse — Live Bitcoin Cash Nostr Observatory">
+<meta property="og:description" content="A real-time observatory for the BCHnostr community. Track live activity, active voices, conversations, hashtags and network signals.">
+<meta property="og:image" content="https://www.bchnostr.live/assets/images/og-image.png">
+<meta property="og:image:secure_url" content="https://www.bchnostr.live/assets/images/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="BCHnostr Pulse — Decentralized Signal Monitor for Bitcoin Cash Nostr">
+
+<!-- X / Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BCHnostr Pulse — Live Bitcoin Cash Nostr Observatory">
+<meta name="twitter:description" content="A real-time observatory for the BCHnostr community. Track live activity, active voices, conversations, hashtags and network signals.">
+<meta name="twitter:image" content="https://www.bchnostr.live/assets/images/og-image.png">
+<meta name="twitter:image:alt" content="BCHnostr Pulse — Decentralized Signal Monitor for Bitcoin Cash Nostr">
+
+<!-- Favicons & app icons -->
+<link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/assets/site.webmanifest">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -461,6 +493,103 @@
     .ad-banner-link{ height:100px; max-width:320px; }
   }
   .ad-slot-footer{ margin-bottom: 8px; }
+
+  /* --- Cypherpunk identity & shareability additions --- */
+  .header-actions{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .btn-share{
+    display:inline-flex; align-items:center; gap:8px;
+    background: transparent; border:1px solid var(--line); color: var(--muted);
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em;
+    text-transform:uppercase; padding:8px 14px; border-radius:8px; cursor:pointer;
+    transition: border-color .15s, color .15s, background .15s;
+  }
+  .btn-share:hover, .btn-share:focus{
+    border-color: var(--green); color: var(--green); background: rgba(23,197,131,0.06);
+    outline:none;
+  }
+  .btn-share .share-icon{ font-size:13px; opacity:0.9; }
+  .share-toast{
+    position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px);
+    background: var(--surface); border:1px solid var(--green-dim); color: var(--green);
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em;
+    padding:10px 18px; border-radius:8px; opacity:0; pointer-events:none;
+    transition: opacity .2s, transform .2s; z-index:1000;
+  }
+  .share-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .eyebrow .status-label{ letter-spacing:0.1em; }
+  .signal-heartbeat{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background:var(--green); margin-right:2px;
+    box-shadow:0 0 0 0 rgba(23,197,131,0.5);
+  }
+  .signal-heartbeat.beat{
+    animation: heartbeatPulse 0.6s ease-out;
+  }
+  @keyframes heartbeatPulse{
+    0%{ box-shadow:0 0 0 0 rgba(23,197,131,0.7); transform:scale(1); }
+    40%{ box-shadow:0 0 0 10px rgba(23,197,131,0); transform:scale(1.35); }
+    100%{ box-shadow:0 0 0 0 rgba(23,197,131,0); transform:scale(1); }
+  }
+
+  .why-section, .about-data-section{
+    max-width:1100px; margin: 40px auto 0; padding: 0 20px;
+  }
+  .why-card, .method-card{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 28px 28px 24px;
+  }
+  .why-card h2, .method-card h2{
+    font-size:15px; letter-spacing:0.06em; text-transform:uppercase;
+    color: var(--green); font-family:'JetBrains Mono', monospace; margin-bottom:14px;
+  }
+  .why-card p, .method-card p{
+    color: var(--muted); font-size:14.5px; line-height:1.65; margin:0 0 12px; max-width:720px;
+  }
+  .why-card p:last-child{ margin-bottom:0; }
+  .why-card .tagline{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color: var(--muted-2);
+    letter-spacing:0.04em; margin-top:16px;
+  }
+
+  .link-method{
+    background:none; border:none; color: var(--muted); font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer;
+    padding:0; text-decoration:underline; text-underline-offset:3px;
+  }
+  .link-method:hover{ color: var(--green); }
+
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(5,10,8,0.72); z-index:900;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    opacity:0; pointer-events:none; transition: opacity .2s;
+  }
+  .modal-backdrop.open{ opacity:1; pointer-events:auto; }
+  .modal{
+    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    max-width:520px; width:100%; max-height:85vh; overflow-y:auto; padding:28px;
+    transform: translateY(12px); transition: transform .2s;
+  }
+  .modal-backdrop.open .modal{ transform: translateY(0); }
+  .modal h2{
+    font-size:16px; margin-bottom:14px; color: var(--green);
+    font-family:'JetBrains Mono', monospace; letter-spacing:0.05em; text-transform:uppercase;
+  }
+  .modal p{ color: var(--muted); font-size:14px; line-height:1.6; margin:0 0 12px; }
+  .modal .close-btn{
+    margin-top:18px; background:transparent; border:1px solid var(--line); color:var(--muted);
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em;
+    text-transform:uppercase; padding:8px 14px; border-radius:8px; cursor:pointer;
+  }
+  .modal .close-btn:hover{ border-color:var(--green); color:var(--green); }
+
+  @media (max-width: 640px){
+    .btn-share{ padding:9px 12px; font-size:10.5px; }
+    .why-card, .method-card{ padding: 20px 18px; }
+    .why-section, .about-data-section{ margin-top: 28px; }
+  }
 </style>
 </head>
 <body>
@@ -472,18 +601,24 @@
     <div class="brand-mark">₿</div>
     <div class="brand-name">BCHnostr Pulse <span>· by CashCompass</span></div>
   </div>
-  <nav class="links" style="display: flex; gap: 20px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
-    <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
-    <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">cashcompass.space</a>
-  </nav>
+  <div class="header-actions">
+    <nav class="links" style="display: flex; gap: 16px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
+      <a href="https://bchnostr.com" target="_blank" rel="noopener">bchnostr.com</a>
+      <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">cashcompass.space</a>
+    </nav>
+    <button type="button" class="btn-share" id="sharePulseBtn" title="Share BCHnostr Pulse" aria-label="Share Pulse">
+      <span class="share-icon">↗</span> SHARE PULSE
+    </button>
+  </div>
 </header>
+<div class="share-toast" id="shareToast" role="status" aria-live="polite">SIGNAL LINK COPIED</div>
 
 <div class="ad-slot is-empty" id="adSlotTop"></div>
 
 <section class="hero">
-  <div class="eyebrow" id="liveStatus"><span class="dot-live" id="liveDot"></span> <span id="liveStatusText">Live from wss://relay.bchnostr.com</span><span class="live-meta mono" id="liveLatency" style="display:none;"></span><span class="live-meta mono" id="livePace" style="display:none;"></span></div>
+  <div class="eyebrow" id="liveStatus"><span class="dot-live" id="liveDot"></span> <span class="status-label" id="liveStatusText">SIGNAL LIVE · wss://relay.bchnostr.com</span><span class="live-meta mono" id="liveLatency" style="display:none;"></span><span class="live-meta mono" id="livePace" style="display:none;"></span></div>
   <h1>Who's keeping BCHnostr alive.</h1>
-  <p>A stronger pulse of the BCHnostr community — real-time activity, most active voices, and network insights.</p>
+  <p>Independent network observatory for the BCHnostr community — real-time activity, most active voices, conversations and network signals.</p>
 </section>
 
 <div class="pulse-wrap">
@@ -597,12 +732,32 @@
 
 <div class="ad-slot ad-slot-footer is-empty" id="adSlotFooter"></div>
 
+<section class="why-section" aria-labelledby="why-heading">
+  <div class="why-card">
+    <h2 id="why-heading">Why this exists</h2>
+    <p>Social networks hide their signals. Decentralized networks should be observable.</p>
+    <p>BCHnostr Pulse watches public network activity in real time, helping the community understand its conversations, activity and growth. No accounts required. No algorithm deciding what you see. No private messages — just public network signals.</p>
+    <p class="tagline">WATCHING THE SIGNAL. MEASURING THE NETWORK.</p>
+    <p style="margin-top:18px;"><button type="button" class="link-method" id="openMethodBtn">About the data / methodology</button></p>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="methodModal" role="dialog" aria-modal="true" aria-labelledby="methodTitle" hidden>
+  <div class="modal">
+    <h2 id="methodTitle">About the data</h2>
+    <p>BCHnostr Pulse connects directly to the public Nostr relay <strong class="mono">wss://relay.bchnostr.com</strong> and observes public events (primarily kind 1 notes and related kinds for reactions, profiles and mentions).</p>
+    <p>Statistics, leaderboards, hashtags, conversations and charts are derived from the public events this dashboard has received since the page was opened, within the selected time window. Historical depth is limited by what the relay currently retains and what this client has observed — there is no separate archive backend.</p>
+    <p>BCHnostr Pulse does not control the underlying network, does not store private messages, and does not require accounts. It is an independent, client-side observatory.</p>
+    <button type="button" class="close-btn" id="closeMethodBtn">Close</button>
+  </div>
+</div>
+
 <footer>
   <div class="support">
     Support this project (BCH)<br>
     <span class="addr">bitcoincash:qrtv37u522gz8a5lezfqk5vukly93cu7gc8tn09040</span>
   </div>
-  <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted);">
+  <div class="footer-links" style="display:flex; gap:20px; font-size:13px; color:var(--muted); flex-wrap:wrap;">
     <a href="https://bchnostr.com" target="_blank" rel="noopener">BCHnostr</a>
     <a href="https://cashcompass-bch.vercel.app/" target="_blank" rel="noopener">CashCompass</a>
     <a href="./advertise.html">Advertise with us</a>
@@ -696,7 +851,16 @@ function setLiveStatus(ok, text){
   const dot = document.getElementById('liveDot');
   const label = document.getElementById('liveStatusText');
   dot.classList.toggle('err', !ok);
-  label.textContent = text;
+  // Preserve cypherpunk labels while keeping real connection state
+  if (ok) {
+    label.textContent = text && text.indexOf('Live from') === 0
+      ? 'SIGNAL LIVE · ' + text.replace('Live from ', '')
+      : (text || 'SIGNAL LIVE · wss://relay.bchnostr.com');
+  } else {
+    label.textContent = text && (text.indexOf('retry') >= 0 || text.indexOf('Disconnected') >= 0 || text.indexOf('Connection') >= 0)
+      ? 'RECONNECTING…'
+      : (text || 'SIGNAL LOST');
+  }
 }
 
 // Real round-trip time to the relay, averaged over the last few one-shot
@@ -849,6 +1013,9 @@ const Relay = {
 function handleIncomingLiveNote(ev){
   if(allNotes.has(ev.id)) return;
   allNotes.set(ev.id, ev);
+
+  // Subtle network heartbeat on genuine new event (visual only; no extra network)
+  triggerSignalHeartbeat();
 
   const since = Math.floor(Date.now() / 1000) - currentWindowHours * 3600;
   if(ev.created_at < since) return;
@@ -1443,6 +1610,73 @@ document.getElementById('windowSelect').addEventListener('click', e => {
   btn.classList.add('active');
   loadActiveUsers(Number(btn.dataset.hours));
 });
+
+// --- Share Pulse (native Web Share API + clipboard fallback) ---
+const SHARE_URL = 'https://www.bchnostr.live/';
+const SHARE_TITLE = 'BCHnostr Pulse — Live Bitcoin Cash Nostr Observatory';
+const SHARE_TEXT = 'BCHnostr Pulse — watching the decentralized signal.\n\nExplore live BCHnostr activity, conversations and community signals.';
+
+function showShareToast(msg){
+  const toast = document.getElementById('shareToast');
+  if(!toast) return;
+  toast.textContent = msg || 'SIGNAL LINK COPIED';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+async function sharePulse(){
+  if(navigator.share){
+    try{
+      await navigator.share({ title: SHARE_TITLE, text: SHARE_TEXT, url: SHARE_URL });
+      return;
+    }catch(e){
+      if(e && e.name === 'AbortError') return;
+    }
+  }
+  try{
+    await navigator.clipboard.writeText(SHARE_URL);
+    showShareToast('SIGNAL LINK COPIED');
+  }catch(_){
+    // last-resort fallback
+    const ta = document.createElement('textarea');
+    ta.value = SHARE_URL;
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); showShareToast('SIGNAL LINK COPIED'); }catch(e){}
+    document.body.removeChild(ta);
+  }
+}
+
+document.getElementById('sharePulseBtn')?.addEventListener('click', sharePulse);
+
+// --- Methodology modal ---
+const methodModal = document.getElementById('methodModal');
+document.getElementById('openMethodBtn')?.addEventListener('click', () => {
+  if(methodModal){ methodModal.hidden = false; methodModal.classList.add('open'); }
+});
+document.getElementById('closeMethodBtn')?.addEventListener('click', () => {
+  if(methodModal){ methodModal.classList.remove('open'); setTimeout(() => { methodModal.hidden = true; }, 200); }
+});
+methodModal?.addEventListener('click', e => {
+  if(e.target === methodModal){
+    methodModal.classList.remove('open');
+    setTimeout(() => { methodModal.hidden = true; }, 200);
+  }
+});
+
+// --- Subtle signal heartbeat on real events (can be toggled off) ---
+let heartbeatEnabled = true;
+try{ heartbeatEnabled = localStorage.getItem('bchnostr_heartbeat') !== '0'; }catch(_){}
+function triggerSignalHeartbeat(){
+  if(!heartbeatEnabled) return;
+  const dot = document.getElementById('liveDot');
+  if(!dot || dot.classList.contains('err')) return;
+  dot.classList.remove('beat');
+  void dot.offsetWidth;
+  dot.classList.add('beat');
+  setTimeout(() => dot.classList.remove('beat'), 650);
+}
 
 async function init(){
   renderAds();
