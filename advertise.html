@@ -3,8 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advertise with BCHnostr Pulse</title>
-<meta name="description" content="Sponsor BCHnostr Pulse to support ongoing development, infrastructure, and new tools for the Bitcoin Cash Nostr ecosystem.">
+<title>Advertise with BCHnostr Pulse — Sponsor the Signal</title>
+<meta name="description" content="Sponsor BCHnostr Pulse to support ongoing development, infrastructure, and new tools for the Bitcoin Cash Nostr ecosystem. No tracking. No interruptions.">
+<meta name="theme-color" content="#1AE08A">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.bchnostr.live/advertise.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.bchnostr.live/advertise.html">
+<meta property="og:site_name" content="BCHnostr Pulse">
+<meta property="og:title" content="Advertise with BCHnostr Pulse — Sponsor the Signal">
+<meta property="og:description" content="Sponsor BCHnostr Pulse to support ongoing development, infrastructure, and new tools for the Bitcoin Cash Nostr ecosystem.">
+<meta property="og:image" content="https://www.bchnostr.live/assets/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Advertise with BCHnostr Pulse — Sponsor the Signal">
+<meta name="twitter:description" content="Sponsor BCHnostr Pulse to support ongoing development, infrastructure, and new tools for the Bitcoin Cash Nostr ecosystem.">
+<meta name="twitter:image" content="https://www.bchnostr.live/assets/images/og-image.png">
+
+<link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/assets/site.webmanifest">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,98 +35,162 @@
 
 <style>
   :root{
-    --bg: #0B1210;
-    --surface: #121C19;
-    --surface-2: #17221E;
-    --line: #223129;
-    --green: #17C583;
-    --green-dim: #0E7F58;
+    --bg: #050807;
+    --surface: #0C1210;
+    --surface-2: #111A16;
+    --line: #1A2A22;
+    --line-bright: #243830;
+    --green: #1AE08A;
+    --green-dim: #0D9A5C;
+    --green-glow: rgba(26, 224, 138, 0.35);
+    --phosphor: #7CFFB2;
     --gold: #E3B341;
-    --text: #EAF2EF;
-    --muted: #7C9089;
-    --muted-2: #536860;
-    --radius: 14px;
+    --text: #E8F5EF;
+    --muted: #6B857A;
+    --muted-2: #3F554C;
+    --radius: 10px;
   }
   *{ box-sizing: border-box; }
   body{
     margin:0; background: var(--bg); color: var(--text);
     font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.6;
   }
-  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.01em; }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.02em; }
   .mono{ font-family:'JetBrains Mono', monospace; }
-  a{ color: inherit; }
+  a{ color: inherit; text-decoration: none; }
+
   .bg-grid{
     position: fixed; inset:0; z-index:-1; pointer-events:none;
-    background-image: radial-gradient(circle at 1px 1px, rgba(23,197,131,0.10) 1px, transparent 0);
-    background-size: 28px 28px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%);
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 90% 50% at 50% -10%, rgba(26,224,138,0.07) 0%, transparent 55%),
+      linear-gradient(rgba(26,224,138,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,224,138,0.03) 1px, transparent 1px),
+      radial-gradient(circle at 1px 1px, rgba(26,224,138,0.12) 1px, transparent 0);
+    background-size: 100% 100%, 48px 48px, 48px 48px, 24px 24px;
   }
+  .bg-grid::after{
+    content:"";
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.045) 2px,
+      rgba(0,0,0,0.045) 4px
+    );
+    pointer-events:none;
+  }
+
   header.top{
     max-width: 900px; margin: 0 auto; padding: 24px 20px 0;
     display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
   }
   .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
   .brand-mark{
-    width:34px; height:34px; border-radius:8px;
-    background: linear-gradient(135deg, var(--green), var(--green-dim));
+    width:34px; height:34px; border-radius:6px;
+    background: #06110C;
+    border: 1px solid var(--green);
+    box-shadow: 0 0 12px var(--green-glow), inset 0 0 8px rgba(26,224,138,0.15);
     display:flex; align-items:center; justify-content:center;
-    font-family:'Space Grotesk'; font-weight:700; color:#06110C; font-size:16px;
+    font-family:'JetBrains Mono', monospace; font-weight:700; color: var(--green); font-size:15px;
   }
-  .brand-name{ font-size:17px; font-weight:600; }
-  .brand-name span{ color: var(--muted); font-weight:400; }
-  .back-link{ font-size:13px; color: var(--muted); text-decoration:none; }
+  .brand-name{ font-size:17px; font-weight:600; letter-spacing:-0.01em; }
+  .brand-name span{ color: var(--muted-2); font-weight:400; font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.04em; }
+  .back-link{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--muted); text-decoration:none;
+  }
   .back-link:hover{ color: var(--green); }
 
   main{ max-width:760px; margin:0 auto; padding: 48px 20px 80px; }
   @media (max-width:640px){ main{ padding: 36px 16px 60px; } }
 
   .eyebrow{
-    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
     color: var(--green); margin-bottom:14px;
+    text-shadow: 0 0 18px var(--green-glow);
   }
   h1{ font-size: clamp(28px, 5vw, 42px); line-height:1.15; max-width: 620px; }
   .lede{ color: var(--muted); font-size:16px; max-width: 600px; margin-top:16px; line-height:1.65; }
 
   .section{ margin-top: 48px; }
-  .section h2{ font-size: 20px; margin-bottom: 16px; }
+  .section h2{
+    font-size: 12px; letter-spacing:0.12em; text-transform:uppercase;
+    color: var(--green); font-family:'JetBrains Mono', monospace; margin-bottom: 16px;
+    text-shadow: 0 0 12px var(--green-glow);
+  }
   .section p{ color: var(--muted); font-size:15px; line-height:1.7; margin: 0 0 12px; }
 
   .grid{ display:grid; grid-template-columns: 1fr; gap:14px; margin-top:16px; }
   @media (min-width:640px){ .grid{ grid-template-columns: 1fr 1fr; } }
   .card{
-    background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-top: 1px solid var(--line-bright);
+    border-radius: var(--radius);
     padding: 20px;
+    box-shadow: inset 0 1px 0 rgba(26,224,138,0.03);
+    position: relative;
+  }
+  .card::before{
+    content:"";
+    position:absolute; top:0; left:16px; right:16px; height:1px;
+    background: linear-gradient(90deg, transparent, rgba(26,224,138,0.25), transparent);
+    opacity:0.7;
   }
   .card h3{ font-size:15px; margin-bottom:8px; }
   .card p{ font-size:13.5px; margin:0; color: var(--muted); }
-  .card .spec{ font-family:'JetBrains Mono', monospace; font-size:12px; color: var(--green); margin-top:10px; }
+  .card .spec{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.04em;
+    color: var(--phosphor); margin-top:12px;
+  }
 
   .principle-list{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
   .principle-list li{
     display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color: var(--text);
   }
-  .principle-list li::before{ content:"✓"; color: var(--green); font-weight:700; flex-shrink:0; }
+  .principle-list li::before{
+    content:"✓"; color: var(--green); font-weight:700; flex-shrink:0;
+    font-family:'JetBrains Mono', monospace;
+  }
   .principle-list .no::before{ content:"✕"; color: var(--muted-2); }
   .principle-list .no{ color: var(--muted); }
 
   .cta-box{
-    margin-top: 48px; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius);
+    margin-top: 48px;
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-left: 3px solid var(--green);
+    border-radius: var(--radius);
     padding: 28px; text-align:center;
+    box-shadow: inset 0 1px 0 rgba(26,224,138,0.04);
   }
-  .cta-box h2{ font-size:20px; margin-bottom:10px; }
+  .cta-box h2{
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color: var(--green); font-family:'JetBrains Mono', monospace; margin-bottom:12px;
+    text-shadow: 0 0 12px var(--green-glow);
+  }
   .cta-box p{ color: var(--muted); font-size:14.5px; margin: 0 0 20px; }
   .cta-button{
     display:inline-flex; align-items:center; gap:8px;
-    background: var(--green); color:#06110C; font-weight:600; font-size:14px;
-    padding: 12px 24px; border-radius: 9999px; text-decoration:none;
+    background: var(--green); color:#04100A; font-weight:600; font-size:13px;
+    font-family:'JetBrains Mono', monospace; letter-spacing:0.06em; text-transform:uppercase;
+    padding: 12px 22px; border-radius: 6px; text-decoration:none;
+    box-shadow: 0 0 16px var(--green-glow);
+    transition: background .15s, box-shadow .15s;
   }
-  .cta-button:hover{ background: #1ed695; }
-  .cta-note{ margin-top:14px; font-size:12.5px; color: var(--muted-2); }
+  .cta-button:hover{ background: #2ef0a0; box-shadow: 0 0 24px var(--green-glow); }
+  .cta-note{
+    margin-top:14px; font-size:11px; color: var(--muted-2);
+    font-family:'JetBrains Mono', monospace; letter-spacing:0.04em;
+  }
 
   footer{
     max-width:760px; margin:0 auto; padding: 32px 20px 60px;
     border-top:1px solid var(--line); color: var(--muted); font-size:13px;
   }
+  footer .mono{ color: var(--green); word-break: break-all; }
 </style>
 </head>
 <body>
@@ -115,13 +202,13 @@
     <div class="brand-mark">₿</div>
     <div class="brand-name">BCHnostr Pulse <span>· by CashCompass</span></div>
   </a>
-  <a class="back-link" href="./index.html">← Back to the live dashboard</a>
+  <a class="back-link" href="./index.html">← Back to dashboard</a>
 </header>
 
 <main>
   <div class="eyebrow">Sponsorship</div>
   <h1>Advertise with BCHnostr Pulse.</h1>
-  <p class="lede">BCHnostr Pulse runs as a free, open dashboard for the Bitcoin Cash Nostr community — and keeping it running, accurate, and improving takes ongoing work. Sponsorship is how that work gets funded without leaning on donations alone.</p>
+  <p class="lede">BCHnostr Pulse runs as a free, open observatory for the Bitcoin Cash Nostr community — and keeping it running, accurate, and improving takes ongoing work. Sponsorship is how that work gets funded without leaning on donations alone.</p>
 
   <div class="section">
     <h2>Where your support goes</h2>
